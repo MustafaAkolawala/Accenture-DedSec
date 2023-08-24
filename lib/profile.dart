@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,12 +8,21 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hackathon/home_screen.dart';
 import 'package:hackathon/image_picker.dart';
 import 'package:hackathon/main.dart';
+import 'package:hackathon/settings.dart';
 
+import 'chatbot.dart';
+import 'forum.dart';
 
+var user = FirebaseAuth.instance.currentUser!;
 
-class Profile extends StatefulWidget  {
+class Profile extends StatefulWidget {
   const Profile({super.key});
 
   @override
@@ -22,76 +32,171 @@ class Profile extends StatefulWidget  {
 }
 
 class _profilestate extends State<Profile> {
-
-var user;
-var userdata;
-var d;
-var username;
-var email;
-var company_name;
-var position;
-var aboutcompany;
-
-
-void getdata()async{
-   user= FirebaseAuth.instance.currentUser!;
-   userdata=  FirebaseFirestore.instance.collection('users').doc(user.uid);
-  d=userdata.get();
-   username =await d.data()['username'];
-   email=await d.data()['email_id'];
-   company_name=await d.data(['company_name']);
-   position=await d.data()['position'];
-   aboutcompany=await d.data()['about_company'];
-   print(email);
-}
-
-
-
+  void signout() async {
+    GoogleSignInAccount? _googlesignin = await GoogleSignIn().signOut();
+  }
 
   File? _selectedimage;
+
   @override
   Widget build(BuildContext context) {
-    getdata();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-
-            children: [
-              imagepicker(onpickedimage: (pickedimage) async {
-                _selectedimage=pickedimage;
-                final storageref=FirebaseStorage.instance.ref().child('User-images').child('${FirebaseAuth.instance.currentUser!.uid}.jpg');
-                await storageref.putFile(_selectedimage!);
-                final imageurl=await storageref.getDownloadURL();
-                userdata.update({
-                  'image_url': imageurl
-                });
-
-              },),
-              const SizedBox(
-                height: 20,
+      bottomNavigationBar: Container(
+        color: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
+          child: GNav(
+            onTabChange: (index) {
+              if (index == 0) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Homescreen()));
+              }
+              if (index == 1) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Forum()));
+              }
+              if (index == 2) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Chatbot()));
+              }
+              if (index == 3) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Setting()));
+              }
+            },
+            backgroundColor: Colors.black,
+            color: Colors.white,
+            activeColor: Colors.white,
+            tabBorderRadius: 10,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            tabBackgroundColor: Colors.blueGrey.shade900,
+            duration: Duration(milliseconds: 900),
+            tabs: const [
+              GButton(
+                icon: Icons.home,
+                text: 'Home',
+                gap: 10,
               ),
-              Text(username),
-              const SizedBox(height: 20,),
-              Text(email),
-              const SizedBox(height: 20,),
-              Text(company_name),
-              const SizedBox(height: 20,),
-              Text(position),
-              const SizedBox(height: 20,),
-              Text(aboutcompany),
-              const SizedBox(height: 20,),
-              TextButton(onPressed: (){
-                FirebaseAuth.instance.signOut();
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>const MyApp()));
-              }, child: const Text('Logout'))
+              GButton(
+                icon: Icons.question_answer,
+                text: 'Forum',
+                gap: 10,
+              ),
+              GButton(
+                icon: Icons.chat_rounded,
+                text: 'Chatbot',
+                gap: 10,
+              ),
+              GButton(
+                icon: Icons.settings,
+                text: 'settings',
+                gap: 10,
+              ),
             ],
           ),
         ),
       ),
+      body:
+         SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.fromLTRB(50, 30, 30, 30),
+            child: Column(
+
+
+              children: [
+                imagepicker(
+                  onpickedimage: (pickedimage) async {
+                    _selectedimage = pickedimage;
+                    final storageref = FirebaseStorage.instance
+                        .ref()
+                        .child('User-images')
+                        .child('${FirebaseAuth.instance.currentUser!.uid}.jpg');
+                    await storageref.putFile(_selectedimage!);
+                    final imageurl = await storageref.getDownloadURL();
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(user.uid)
+                        .update({'image_url': imageurl});
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SingleChildScrollView(
+                      child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(user.uid)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return const Text('Something went wrong');
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            Map<String, dynamic> doc =
+                                snapshot.data!.data() as Map<String, dynamic>;
+                            return Column(
+                              children: [Row(children: [const Text('USERNAME:'),SizedBox(width: 15,),Text(doc['username']),],),
+
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(children: [const Text('Email-Id:'),SizedBox(width: 15,),Text(doc['email_id']),],),
+
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(children: [const Text('Company:'),SizedBox(width: 15,),doc['company_name']==null?Text('Add Company name'):Text(doc['company_name']),],),
+
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(children: [const Text('Position:'),SizedBox(width: 15,),doc['position']==null?Text('Add Position'):Text(doc['position']),],),
+
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(children: [const Text('About-Company:'),SizedBox(width: 15,),doc['About_company']==null?Text('Add Company Information'):Text(doc['About_company']),],),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            );
+                          }
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                TextButton(
+                    onPressed: () {
+                      signout();
+
+                      FirebaseAuth.instance.signOut();
+
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => const MyApp()));
+                    },
+                    child: const Text('Logout'))
+              ],
+            ),
+          ),
+        ),
+
     );
   }
 }

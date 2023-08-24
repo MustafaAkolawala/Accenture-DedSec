@@ -7,6 +7,7 @@ import 'package:hackathon/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hackathon/splash_screen.dart';
 import 'firebase_options.dart';
+import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,9 +31,6 @@ class MyApp extends StatelessWidget {
             builder: (ctx, snapshot) {
               if(snapshot.connectionState==ConnectionState.waiting){
                 return const Splashscreen();
-              }
-              if (snapshot.hasData) {
-                return const Homescreen();
               }
               return const login();
             }));

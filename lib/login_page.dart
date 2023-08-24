@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hackathon/home_screen.dart';
+
 final _auth= FirebaseAuth.instance;
 
 class login extends StatefulWidget {
@@ -20,6 +23,7 @@ class _loginstate extends State<login> {
   var _enteredpassword='';
   var _enteredusername='';
   var _confirmpass='';
+
   final _formkey= GlobalKey<FormState>();
   void _submit() async{
     final _isvalid=_formkey.currentState!.validate();
@@ -29,11 +33,32 @@ class _loginstate extends State<login> {
     _formkey.currentState!.save();
     try{
       if(_islogin){
+
+
         final usercredetials=await _auth.signInWithEmailAndPassword(email: _enteredemail, password: _enteredpassword);
+        if(FirebaseAuth.instance.currentUser!.emailVerified==false){
+          FirebaseAuth.instance.currentUser!.sendEmailVerification();
+          FirebaseAuth.instance.currentUser!.reload();
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Check your Email for verification')));
+        }
+        else{
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>const Homescreen()));
+        }
       }
       else {
         final usercredentials = await _auth.createUserWithEmailAndPassword(
             email: _enteredemail, password: _enteredpassword);
+        if(FirebaseAuth.instance.currentUser!.emailVerified==false){
+          FirebaseAuth.instance.currentUser!.sendEmailVerification();
+          FirebaseAuth.instance.currentUser!.reload();
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Check your Email for verification')));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>login()));
+        }
+        else{
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>const Homescreen()));
+        }
 
       }
     }
@@ -49,10 +74,34 @@ await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.c
   'username': _enteredusername,
   'email_id' : _enteredemail,
   'image_url' : 'to be done',
-  'company_name': 'to be done',
-  'position':'to be done',
-  'About_company' : 'to be done'
+  'company_name': 'Add Company Name',
+  'position':'Add position',
+  'About_company' : 'Add Details'
 });
+
+  }
+
+  Future<UserCredential> googlesignin() async{
+    final GoogleSignInAccount? guser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication gauth = await guser!.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: gauth.accessToken,
+      idToken: gauth.idToken,
+
+    );
+final auth = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set({
+      'username': guser.displayName,
+      'email_id' : guser.email,
+      'image_url' : guser.photoUrl,
+
+
+    });
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>const Homescreen()));
+     return auth;
 
   }
   @override
@@ -112,9 +161,9 @@ await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.c
                           const SizedBox(height: 20,),
                           ElevatedButton(onPressed: _submit, child:  Text( _islogin?'Sign In':'Sign Up')),
                           const SizedBox(height: 8,),
-                          const Text('or'),
-                          Text(_islogin?'Login using':'signup using'),
-                          OutlinedButton(onPressed: (){}, child: SizedBox(width:50,height:50,child:Image.asset('assets/images/google_logo.png'),)),
+                          const Text('Or continue using'),
+
+                          OutlinedButton(onPressed: googlesignin, child: SizedBox(width:50,height:50,child:Image.asset('assets/images/google_logo.png'),)),
                           const SizedBox(height: 50,),
                           TextButton(onPressed: (){setState(() {
                             _islogin=!_islogin;
