@@ -14,6 +14,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hackathon/home_screen.dart';
 import 'package:hackathon/image_picker.dart';
+import 'package:hackathon/login_page.dart';
 import 'package:hackathon/main.dart';
 import 'package:hackathon/settings.dart';
 
@@ -33,7 +34,12 @@ class Profile extends StatefulWidget {
 
 class _profilestate extends State<Profile> {
   void signout() async {
-    GoogleSignInAccount? _googlesignin = await GoogleSignIn().signOut();
+     await GoogleSignIn().signOut();
+     //await GoogleSignIn().disconnect();
+     FirebaseAuth.instance.signOut();
+
+     await Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+         builder: (c) => const login()),(route)=>false);
   }
 
   File? _selectedimage;
@@ -116,8 +122,8 @@ class _profilestate extends State<Profile> {
                         .ref()
                         .child('User-images')
                         .child('${FirebaseAuth.instance.currentUser!.uid}.jpg');
-                    await storageref.putFile(_selectedimage!);
-                    final imageurl = await storageref.getDownloadURL();
+                    TaskSnapshot snap = await storageref.putFile(_selectedimage!);
+                    String imageurl = await snap.ref.getDownloadURL();
                     FirebaseFirestore.instance
                         .collection('users')
                         .doc(user.uid)
@@ -185,11 +191,11 @@ class _profilestate extends State<Profile> {
                 TextButton(
                     onPressed: () {
                       signout();
+                     // Navigator.of(context).pop();
 
-                      FirebaseAuth.instance.signOut();
 
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const MyApp()));
+
+
                     },
                     child: const Text('Logout'))
               ],

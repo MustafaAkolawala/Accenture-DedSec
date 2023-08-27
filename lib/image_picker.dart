@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hackathon/pick_image.dart';
 import 'package:image_picker/image_picker.dart';
 
 
@@ -17,28 +19,30 @@ final void Function(File pickedimage) onpickedimage;
 }
 
 class _imagepickerstate extends State<imagepicker> {
+
   var Url;
   void getimage()async {
-    final storageref=FirebaseStorage.instance.ref().child('User-images').child('${FirebaseAuth.instance.currentUser!.uid}.jpg');
-    final imageurl= await storageref.getDownloadURL();
-    if(imageurl==null){
+    DocumentSnapshot snap = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+    setState(() {
+      Url = (snap.data() as Map<String,dynamic>)['image_url'];
+      print(Url);
+
+    });
+    if(Url==null){
       return;
     }
-    setState(() {
-      Url= imageurl;
-    });
+
+getimage();
 
   }
   File? _pickedimagefile;
   void _pickimage()async{
-    final pickediamge = await ImagePicker().pickImage(source: ImageSource.gallery,imageQuality: 50,maxWidth: 400,maxHeight: 450);
-    if(pickediamge==null){
-      return;
-    }
-    setState(() {
-      _pickedimagefile= File(pickediamge.path);
+    final image = await  Pickimage(ImageSource.gallery);
+    setState(()  {
+      _pickedimagefile=  image;
     });
     widget.onpickedimage(_pickedimagefile!);
+
   }
 
   @override
@@ -48,7 +52,7 @@ class _imagepickerstate extends State<imagepicker> {
 
 
         Url!=null?
-          CircleAvatar(radius: 100,backgroundColor: Colors.blueGrey,foregroundImage: Image.network(Url ?? '').image,)
+          CircleAvatar(radius: 100,backgroundImage: NetworkImage(Url),)
         :
          CircleAvatar(radius: 100,backgroundColor: Colors.blueGrey,foregroundImage:_pickedimagefile!=null?FileImage(_pickedimagefile!):null,),
         TextButton.icon(

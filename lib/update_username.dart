@@ -34,26 +34,26 @@ class _bottommodalstate extends State<Updateuser> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 50),
       child: Column(
         children: [
           TextField(
             controller: _compcontroller,
             maxLength: 20,
-            decoration: const InputDecoration(hintText: 'Company name'),
+            decoration: const InputDecoration(hintText: 'Username'),
           ),
           const SizedBox(
             height: 20,
           ),
 
-          Row(
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Cancel')),
-              ElevatedButton(onPressed: _submit, child: const Text('Update'))
+                  child: const Text('Cancel',style: TextStyle(color: Colors.red),)),
+              ElevatedButton(onPressed: _submit, child: const Text('Update',style: TextStyle(color: Colors.green),))
             ],
           )
         ],

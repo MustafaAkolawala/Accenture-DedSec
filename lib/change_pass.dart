@@ -62,14 +62,14 @@ Navigator.pop(context);
             maxLength: 20,
             decoration: const InputDecoration(hintText: 'Enter new password'),
           ),
-          Row(
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Cancel')),
-              ElevatedButton(onPressed: _validate, child: const Text('Update'))
+                  child: const Text('Cancel',style: TextStyle(color: Colors.red),)),
+              ElevatedButton(onPressed: _validate, child: const Text('Update',style: TextStyle(color: Colors.green)))
             ],
           )
         ],

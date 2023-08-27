@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:hackathon/forum_upload_layout.dart';
 import 'package:hackathon/profile.dart';
 import 'package:hackathon/settings.dart';
 
@@ -10,9 +11,11 @@ import 'home_screen.dart';
 class Forum extends StatelessWidget{
   const Forum({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      appBar: AppBar(title: const Text('Forum'),actions: [IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> const Forum_upload()));}, icon: const Icon(Icons.add))],),
       bottomNavigationBar:  Container(
         color: Colors.black,
         child: Padding(

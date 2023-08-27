@@ -21,13 +21,13 @@ class Setting extends StatefulWidget {
 class _settingstate extends State<Setting> {
   void _addoverlay() {
     showModalBottomSheet(
-        isScrollControlled: true,
+
         context: context,
         builder: (ctx) => Bottommodal());
   }
   void _addoverlay1() {
     showModalBottomSheet(
-        isScrollControlled: true,
+
         context: context,
         builder: (ctx) => Updateuser());
   }
@@ -39,6 +39,7 @@ class _settingstate extends State<Setting> {
   }
   void _addoverlay3() {
     showModalBottomSheet(
+
 
         context: context,
         builder: (ctx) => Delete());
