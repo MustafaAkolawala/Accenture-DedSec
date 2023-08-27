@@ -46,6 +46,7 @@ dependencies:
   get: ^4.6.1
   google_nav_bar: ^5.0.6
   uuid: ^3.0.7
+  intl: ^0.18.1
 
 
 dev_dependencies:

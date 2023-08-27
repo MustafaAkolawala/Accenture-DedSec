@@ -5,6 +5,7 @@ import 'package:hackathon/bottommodal.dart';
 import 'package:hackathon/change_pass.dart';
 import 'package:hackathon/delete_user.dart';
 import 'package:hackathon/profile.dart';
+import 'package:hackathon/update_bio.dart';
 import 'package:hackathon/update_username.dart';
 
 import 'chatbot.dart';
@@ -44,12 +45,19 @@ class _settingstate extends State<Setting> {
         context: context,
         builder: (ctx) => Delete());
   }
+  void _addoverlay4() {
+    showModalBottomSheet(
+
+
+        context: context,
+        builder: (ctx) => Updatebio());
+  }
 
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(appBar: AppBar(title: Text('Settings'),),
       bottomNavigationBar: Container(
         color: Colors.black,
         child: Padding(
@@ -114,8 +122,10 @@ class _settingstate extends State<Setting> {
             TextButton(onPressed: _addoverlay1, child: const Text('Change Username')),
             TextButton(
                 onPressed: _addoverlay, child: const Text('Update personal details')),
+            TextButton(onPressed: _addoverlay3, child: const Text('Update BIO')),
             TextButton(onPressed: _addoverlay2, child: const Text('Change Password')),
-            TextButton(onPressed: _addoverlay3, child: const Text('Delete Account'))
+            TextButton(onPressed: _addoverlay3, child: const Text('Delete Account')),
+            TextButton(onPressed: _addoverlay3, child: const Text('Update BIO'))
           ],
         ),
       ),

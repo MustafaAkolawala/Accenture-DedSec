@@ -17,24 +17,26 @@ final void Function(File pickedimage) onpickedimage;
     return _imagepickerstate();
   }
 }
+String Url='';
+void getimage()async {
+  DocumentSnapshot snap = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
 
+     Url = await (snap.data() as Map<String,dynamic>)['image_url'];
+    print(Url);
+
+
+  if(Url==null){
+    return;
+  }
+
+
+
+
+}
 class _imagepickerstate extends State<imagepicker> {
 
-  var Url;
-  void getimage()async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
-    setState(() {
-      Url = (snap.data() as Map<String,dynamic>)['image_url'];
-      print(Url);
 
-    });
-    if(Url==null){
-      return;
-    }
 
-getimage();
-
-  }
   File? _pickedimagefile;
   void _pickimage()async{
     final image = await  Pickimage(ImageSource.gallery);
@@ -44,7 +46,11 @@ getimage();
     widget.onpickedimage(_pickedimagefile!);
 
   }
-
+  @override
+  void setState(VoidCallback fn) {
+    getimage();
+    super.setState(fn);
+  }
   @override
   Widget build(BuildContext context) {
     return Column(

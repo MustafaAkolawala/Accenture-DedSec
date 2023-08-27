@@ -18,39 +18,41 @@ class _bottommodalstate extends State<Bottommodal> {
   final _compcontroller = TextEditingController();
   final _poscontroller = TextEditingController();
   final _aboutcontroller= TextEditingController();
+  final _biocontroller=TextEditingController();
 void _submit(){
 if(_compcontroller.text.trim().isEmpty&&_poscontroller.text.trim().isEmpty&&_aboutcontroller.text.trim().isEmpty){
 showDialog(context: context, builder: (ctx)=> AlertDialog(title: Text('No Value entered'),content: Text('Please enter some data'),actions: [TextButton(onPressed: (){Navigator.pop(ctx);}, child: Text('close'))],));
 return;
 }
 if(_compcontroller.text.trim().isEmpty && _poscontroller.text.trim().isEmpty){
-  FirebaseFirestore.instance.collection('user_details').doc(FirebaseAuth.instance.currentUser!.uid).update({'About_company': _aboutcontroller.text});
+  FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({'About_company': _aboutcontroller.text});
   Navigator.pop(context);
 }
 if(_aboutcontroller.text.trim().isEmpty && _poscontroller.text.trim().isEmpty){
-  FirebaseFirestore.instance.collection('user_details').doc(FirebaseAuth.instance.currentUser!.uid).update({'company_name': _compcontroller.text});
+  FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({'company_name': _compcontroller.text});
 
 }
 if(_compcontroller.text.trim().isEmpty && _aboutcontroller.text.trim().isEmpty){
-  FirebaseFirestore.instance.collection('user_details').doc(FirebaseAuth.instance.currentUser!.uid).update({'position': _poscontroller.text});
+  FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({'position': _poscontroller.text});
 
 }
+
 if( _poscontroller.text.trim().isEmpty) {
-  FirebaseFirestore.instance.collection('user_details').doc(
+  FirebaseFirestore.instance.collection('users').doc(
       FirebaseAuth.instance.currentUser!.uid).update(
       {'company_name': _compcontroller.text,'About_company':_aboutcontroller});
 }
 if( _aboutcontroller.text.trim().isEmpty) {
-  FirebaseFirestore.instance.collection('user_details').doc(
+  FirebaseFirestore.instance.collection('users').doc(
       FirebaseAuth.instance.currentUser!.uid).update(
       {'company_name': _compcontroller.text,'position':_poscontroller});
 }
 if( _compcontroller.text.trim().isEmpty) {
-  FirebaseFirestore.instance.collection('user_details').doc(
+  FirebaseFirestore.instance.collection('users').doc(
       FirebaseAuth.instance.currentUser!.uid).update(
       {'position': _poscontroller.text,'About_company':_aboutcontroller});
 }
-else{FirebaseFirestore.instance.collection('user_details').doc(FirebaseAuth.instance.currentUser!.uid).set({'company_name': _compcontroller.text,'position':_poscontroller.text,'About_company': _aboutcontroller.text});
+else{FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({'company_name': _compcontroller.text,'position':_poscontroller.text,'About_company': _aboutcontroller.text});
 }
 Navigator.pop(context);
 }
@@ -87,11 +89,13 @@ super.dispose();
           TextField(
             controller: _aboutcontroller,
             maxLength: 200,
+            maxLines: 4,
             decoration: const InputDecoration(hintText: 'About Company'),
           ),
           const SizedBox(
             height: 20,
           ),
+
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ElevatedButton(

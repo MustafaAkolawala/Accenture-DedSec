@@ -161,6 +161,11 @@ class _profilestate extends State<Profile> {
                                 const SizedBox(
                                   height: 20,
                                 ),
+                                Row(children: [const Text('Bio:'),SizedBox(width: 15,),Text(doc['Bio']),],),
+
+                                const SizedBox(
+                                  height: 20,
+                                ),
                                 Row(children: [const Text('Email-Id:'),SizedBox(width: 15,),Text(doc['email_id']),],),
 
                                 const SizedBox(

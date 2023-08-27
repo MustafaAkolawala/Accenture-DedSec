@@ -23,7 +23,7 @@ final emailid= FirebaseAuth.instance.currentUser!.email.toString();
 final password = _compcontroller.text.trim();
 AuthCredential authCredential =  EmailAuthProvider.credential(email: emailid, password: password);
 final bool =FirebaseAuth.instance.currentUser?.reauthenticateWithCredential(authCredential);
-if(bool != null){
+if(bool ==true){
   final newpassword = _passcontroller.text.trim();
   FirebaseAuth.instance.currentUser!.updatePassword(newpassword);
 }
