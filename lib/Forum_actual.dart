@@ -73,7 +73,7 @@ class Forum_actual extends StatelessWidget {
                       stream: FirebaseFirestore.instance
                           .collection('Forum_posts')
                           .doc(post)
-                          .collection('Replies')
+                          .collection('Replies').orderBy('likes',descending: true)
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -83,7 +83,7 @@ class Forum_actual extends StatelessWidget {
                         return ListView.builder(
                           shrinkWrap: true,
                             itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (context, index) => Comment_card(snap: snapshot.data!.docs[index].data(),));
+                            itemBuilder: (context, index) => Comment_card(snap: snapshot.data!.docs[index].data(),postid: pid,));
                       })
                 ],
               ),

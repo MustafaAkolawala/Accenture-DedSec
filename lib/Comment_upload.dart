@@ -24,7 +24,8 @@ try{
       'uid': uid,
       'text': text,
       'commentid': commentid,
-      'datepublished': DateTime.now()
+      'datepublished': DateTime.now(),
+      'likes':[],
     });
 
   }

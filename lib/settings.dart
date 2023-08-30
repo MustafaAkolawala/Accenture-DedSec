@@ -122,10 +122,10 @@ class _settingstate extends State<Setting> {
             TextButton(onPressed: _addoverlay1, child: const Text('Change Username')),
             TextButton(
                 onPressed: _addoverlay, child: const Text('Update personal details')),
-            TextButton(onPressed: _addoverlay3, child: const Text('Update BIO')),
+            TextButton(onPressed: _addoverlay4, child: const Text('Update BIO')),
             TextButton(onPressed: _addoverlay2, child: const Text('Change Password')),
             TextButton(onPressed: _addoverlay3, child: const Text('Delete Account')),
-            TextButton(onPressed: _addoverlay3, child: const Text('Update BIO'))
+
           ],
         ),
       ),

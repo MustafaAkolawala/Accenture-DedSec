@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,7 +43,7 @@ class _profilestate extends State<Profile> {
          builder: (c) => const login()),(route)=>false);
   }
 
-  File? _selectedimage;
+  Uint8List? _selectedimage;
 
   @override
   Widget build(BuildContext context) {
@@ -122,8 +123,9 @@ class _profilestate extends State<Profile> {
                         .ref()
                         .child('User-images')
                         .child('${FirebaseAuth.instance.currentUser!.uid}.jpg');
-                    TaskSnapshot snap = await storageref.putFile(_selectedimage!);
+                    TaskSnapshot snap = await storageref.putData(_selectedimage!);
                     String imageurl = await snap.ref.getDownloadURL();
+                    print(imageurl);
                     FirebaseFirestore.instance
                         .collection('users')
                         .doc(user.uid)
@@ -156,32 +158,40 @@ class _profilestate extends State<Profile> {
                             Map<String, dynamic> doc =
                                 snapshot.data!.data() as Map<String, dynamic>;
                             return Column(
-                              children: [Row(children: [const Text('USERNAME:'),SizedBox(width: 15,),Text(doc['username']),],),
+                              children: [Row(children: [const Text('USERNAME:'),SizedBox(width: 15,),Text(doc['username'],maxLines: 1,),],),
 
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                Row(children: [const Text('Bio:'),SizedBox(width: 15,),Text(doc['Bio']),],),
+                                Row(children: [const Text('Bio:'),SizedBox(width: 15,),Column(
+                                  children: [
+                                    Text(doc['Bio'],maxLines: 4,overflow: TextOverflow.clip,),
+                                  ],
+                                ),],),
 
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                Row(children: [const Text('Email-Id:'),SizedBox(width: 15,),Text(doc['email_id']),],),
+                                Row(children: [const Text('Email-Id:'),SizedBox(width: 15,),Text(doc['email_id'],maxLines: 1,),],),
 
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                Row(children: [const Text('Company:'),SizedBox(width: 15,),doc['company_name']==null?Text('Add Company name'):Text(doc['company_name']),],),
+                                Row(children: [const Text('Company:'),SizedBox(width: 15,),doc['company_name']==null?Text('Add Company name'):Text(doc['company_name'],maxLines: 1,),],),
 
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                Row(children: [const Text('Position:'),SizedBox(width: 15,),doc['position']==null?Text('Add Position'):Text(doc['position']),],),
+                                Column(
+                                  children: [
+                                    Row(children: [const Text('Position:'),SizedBox(width: 15,),doc['position']==null?Text('Add Position'):Text(doc['position'],maxLines: 1,),],),
+                                  ],
+                                ),
 
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                Row(children: [const Text('About-Company:'),SizedBox(width: 15,),doc['About_company']==null?Text('Add Company Information'):Text(doc['About_company']),],),
+                                Row(children: [const Text('About-Company:'),SizedBox(width: 15,),doc['About_company']==null?Text('Add Company Information'):Text(doc['About_company'],maxLines: 4,overflow: TextOverflow.ellipsis,),],),
                                 const SizedBox(
                                   height: 20,
                                 ),
