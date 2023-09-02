@@ -1,7 +1,10 @@
 import nltk
 from nltk.stem.lancaster import LancasterStemmer
-import numpy
+import numpy as np
 import tensorflow
+from tensorflow import keras
+from keras.models import Sequential
+from keras.layers import Dense
 import random
 import json
 
@@ -20,7 +23,6 @@ for intent in data["intents"]:
         wrds = nltk.word_tokenize(pattern)
         words.extend(wrds)
         docs_x.append(wrds)
-
         docs_y.append(intent["tag"])
 
     if intent["tag"] not in labels:
@@ -53,8 +55,18 @@ for x, doc in enumerate(docs_x):
     training.append(bag)
     output.append(output_row)
 
-training = numpy.array(training)
-output = numpy.array(output)
+training = np.array(training)
+output = np.array(output)
 
+model = Sequential([
+    Dense(8, input_shape=(len(training[0]),), activation='relu'),
+    Dense(8, activation='relu'),
+    Dense(8, activation='relu'),
+    Dense(len(output[0]), activation='softmax')
+])
+
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+model.fit(training, output, epochs=1000, batch_size=8, verbose=1) 
+model.save("model_keras.h5")
 
     
