@@ -8,6 +8,7 @@ final FirebaseFirestore _firestore= FirebaseFirestore.instance;
 Future<String>Upload({
   required String Question,
   required String image,
+  required String cat,
 })
 
 async{
@@ -19,7 +20,7 @@ String postid= Uuid().v1();
   String res = 'some error occured';
   try{
     if(Question.isNotEmpty){
-      await _firestore.collection('Forum_posts').doc(postid).set({
+      await _firestore.collection('Forum_posts').doc(cat).collection('posts').doc(postid).set({
         'username': username,
         'Question': Question,
         'Uid': userid,

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:hackathon/Forum_categories.dart';
 import 'package:hackathon/chatbot.dart';
 import 'package:hackathon/forum.dart';
 import 'package:hackathon/profile.dart';
 import 'package:hackathon/settings.dart';
+import 'package:flutter/services.dart';
 
 class Homescreen extends StatefulWidget{
   const Homescreen({super.key});
@@ -35,48 +37,87 @@ Forum(),
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar:AppBar(title: const Text('Home'),/*actions: [IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>const Profile()));
-
-      }, icon: const Icon(Icons.person))],*/),
-    bottomNavigationBar:  Container(
-      color: Colors.black,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 20),
-        child: GNav(
-
-          onTabChange: (index){
-            if(index==0){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const Forum()));
-            }
-            if(index==1){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const Chatbot()));
-            }
-            if(index==2){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const Profile()));
-            }
-            if(index==3){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> Setting()));
-            }
-
+    return WillPopScope(
+      onWillPop: () async {
+        final shouldPop = await showDialog<bool>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Exit'),
+              content: const Text('Are you sure you want to exit the app?'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    SystemNavigator.pop();
+                  },
+                  child: const Text('Yes', style: TextStyle(color: Colors.red),),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, false);
+                  },
+                  child: const Text(
+                    'No',
+                    style: TextStyle(color: Colors.green),
+                  ),
+                ),
+              ],
+            );
           },
-          backgroundColor: Colors.black,
-          color: Colors.white,
-          activeColor: Colors.white,
-          tabBorderRadius: 10,
-          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
-          tabBackgroundColor: Colors.blueGrey.shade900,
+        );
+        return shouldPop!;
+      },
+      child: Scaffold(appBar:AppBar(title: const Text('Home'),/*actions: [IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>const Profile()));
 
-          duration: Duration(milliseconds: 900),
-          tabs: [
-            GButton(icon: Icons.question_answer,text: 'Forum',gap: 10,),
-            GButton(icon: Icons.chat_rounded,text: 'Chatbot',gap: 10,),
-            GButton(icon: Icons.person,text: 'Profile',gap: 10,),
-            GButton(icon: Icons.settings,text: 'settings',gap: 10,),
-          ],
+        }, icon: const Icon(Icons.person))],*/),
+      bottomNavigationBar:  Container(
+
+        color: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 20),
+          child: GNav(
+            style: GnavStyle.oldSchool,
+            textSize: 10,
+
+            onTabChange: (index){
+              if(index==1){
+                Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>Forum_categories(),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero));
+              }
+              if(index==2){
+                Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>Chatbot(),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero));
+              }
+              if(index==3){
+                Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>Profile(),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero));
+              }
+              if(index==4){
+                Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>Setting(),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero));
+              }
+
+            },
+            backgroundColor: Colors.black,
+            color: Colors.white,
+            activeColor: Colors.white,
+            tabBorderRadius: 20,
+            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+            //tabBackgroundColor: Colors.blueGrey.shade900,
+
+            duration: Duration(milliseconds: 900),
+            tabs: [
+              GButton(
+                icon: Icons.home,
+                text: 'Home',
+                gap: 10,
+              ),
+              GButton(icon: Icons.question_answer,text: 'Forum',gap: 10,),
+              GButton(icon: Icons.chat_rounded,text: 'Chatbot',gap: 10,),
+              GButton(icon: Icons.person,text: 'Profile',gap: 10,),
+              GButton(icon: Icons.settings,text: 'settings',gap: 10,),
+            ],
+          ),
         ),
       ),
-    ),
-    body: Center(child: Text('succesfully Logged in'),),);
+      body: Center(child: Text('succesfully Logged in'),),),
+    );
   }
 
 }

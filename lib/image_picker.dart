@@ -21,17 +21,14 @@ final void Function(Uint8List pickedimage) onpickedimage;
 
 class _imagepickerstate extends State<imagepicker> {
 
-  String Url='';
+  String? Url;
   void getimage()async {
     DocumentSnapshot snap = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
-setState(() async { Url = await (snap.data() as Map<String,dynamic>)['image_url'];});
-
-    print(Url);
+setState(()  { Url =  (snap.data() as Map<String,dynamic>)['image_url'];});
 
 
-    if(Url==null){
-      return;
-    }
+
+
 
 
 
@@ -47,19 +44,16 @@ setState(() async { Url = await (snap.data() as Map<String,dynamic>)['image_url'
     widget.onpickedimage(_pickedimagefile!);
 
   }
-  @override
-  void setState(VoidCallback fn) {
-    getimage();
-    super.setState(fn);
-  }
+
   @override
   Widget build(BuildContext context) {
+    getimage();
     return Column(
       children: [
 
 
         Url!=null?
-          CircleAvatar(radius: 100,backgroundImage: NetworkImage(Url),)
+          CircleAvatar(radius: 100,backgroundImage: NetworkImage(Url!),)
         :
          CircleAvatar(radius: 100,backgroundColor: Colors.blueGrey,foregroundImage:_pickedimagefile!=null?Image.memory(_pickedimagefile!) as ImageProvider:null,),
         TextButton.icon(

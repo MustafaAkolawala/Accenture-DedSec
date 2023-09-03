@@ -29,30 +29,30 @@ if(_compcontroller.text.trim().isEmpty && _poscontroller.text.trim().isEmpty){
   Navigator.pop(context);
 }
 if(_aboutcontroller.text.trim().isEmpty && _poscontroller.text.trim().isEmpty){
-  FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({'company_name': _compcontroller.text});
+  FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({'Company': _compcontroller.text});
 
 }
 if(_compcontroller.text.trim().isEmpty && _aboutcontroller.text.trim().isEmpty){
-  FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({'position': _poscontroller.text});
+  FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({'Position': _poscontroller.text});
 
 }
 
 if( _poscontroller.text.trim().isEmpty) {
   FirebaseFirestore.instance.collection('users').doc(
       FirebaseAuth.instance.currentUser!.uid).update(
-      {'company_name': _compcontroller.text,'About_company':_aboutcontroller});
+      {'Company': _compcontroller.text,'About_company':_aboutcontroller});
 }
 if( _aboutcontroller.text.trim().isEmpty) {
   FirebaseFirestore.instance.collection('users').doc(
       FirebaseAuth.instance.currentUser!.uid).update(
-      {'company_name': _compcontroller.text,'position':_poscontroller});
+      {'Company': _compcontroller.text,'Position':_poscontroller});
 }
 if( _compcontroller.text.trim().isEmpty) {
   FirebaseFirestore.instance.collection('users').doc(
       FirebaseAuth.instance.currentUser!.uid).update(
-      {'position': _poscontroller.text,'About_company':_aboutcontroller});
+      {'Position': _poscontroller.text,'About_company':_aboutcontroller});
 }
-else{FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({'company_name': _compcontroller.text,'position':_poscontroller.text,'About_company': _aboutcontroller.text});
+else{FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({'Company': _compcontroller.text,'Position':_poscontroller.text,'About_company': _aboutcontroller.text});
 }
 Navigator.pop(context);
 }

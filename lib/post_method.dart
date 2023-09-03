@@ -11,7 +11,7 @@ class post_method{
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 
-  Future<void> delete(String postid)async{
+  Future<void> delete(String postid,String cat)async{
     String res = '';
     DocumentSnapshot snap =
     await _firestore.collection('Forum_posts').doc(postid).get();
@@ -19,7 +19,7 @@ class post_method{
 
 try{
   if(_auth==uid ){
-    await _firestore.collection('Forum_posts').doc(postid).delete();
+    await _firestore.collection('Forum_posts').doc(cat).collection('posts').doc(postid).delete();
     res='success';
   }
   else{

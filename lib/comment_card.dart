@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Comment_card extends StatefulWidget {
-  const Comment_card({super.key,required this.snap,required this.postid});
+  const Comment_card({super.key,required this.snap,required this.postid,required this.cat});
 final snap;
 final postid;
+final cat;
   @override
   State<StatefulWidget> createState() {
     return _commentcardstate();
@@ -22,7 +23,7 @@ class _commentcardstate extends State<Comment_card> {
   Future <void> likepost(String commentid,String uid, List likes)async {
     try{
       if(likes.contains(uid)){
-        await FirebaseFirestore.instance.collection('Forum_posts').doc(widget.postid).collection('Replies').doc(commentid).update({
+        await FirebaseFirestore.instance.collection('Forum_posts').doc(widget.cat).collection('posts').doc(widget.postid).collection('Replies').doc(commentid).update({
 
           'likes':FieldValue.arrayRemove([uid]),
 
@@ -34,7 +35,7 @@ class _commentcardstate extends State<Comment_card> {
 
       }
       else{
-        await FirebaseFirestore.instance.collection('Forum_posts').doc(widget.postid).collection('Replies').doc(commentid).update({
+        await FirebaseFirestore.instance.collection('Forum_posts').doc(widget.cat).collection('posts').doc(widget.postid).collection('Replies').doc(commentid).update({
           'likes':FieldValue.arrayUnion([uid]),
         });
         setState(() {

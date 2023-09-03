@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:hackathon/Comment_upload.dart';
 
 class Comments extends StatefulWidget {
-  const Comments({super.key, required this.pid});
+  const Comments({super.key, required this.pid,required this.category});
 
   final pid;
+  final category;
 
   @override
   State<StatefulWidget> createState() {
@@ -72,7 +73,7 @@ class _Commentsstate extends State<Comments> {
                     text: comcontroller.text,
                     uid: uid,
                     profilepic: profile_image,
-                    username: username);
+                    username: username,category: widget.category);
                 setState(() {
                   comcontroller.clear();
                   Navigator.of(context).pop();

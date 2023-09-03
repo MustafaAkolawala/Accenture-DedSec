@@ -22,8 +22,8 @@ class _bottommodalstate extends State<Changepass> {
 final emailid= FirebaseAuth.instance.currentUser!.email.toString();
 final password = _compcontroller.text.trim();
 AuthCredential authCredential =  EmailAuthProvider.credential(email: emailid, password: password);
-final bool =FirebaseAuth.instance.currentUser?.reauthenticateWithCredential(authCredential);
-if(bool ==true){
+final bools =FirebaseAuth.instance.currentUser?.reauthenticateWithCredential(authCredential);
+if(bools ==true){
   final newpassword = _passcontroller.text.trim();
   FirebaseAuth.instance.currentUser!.updatePassword(newpassword);
 }

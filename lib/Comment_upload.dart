@@ -12,13 +12,14 @@ class Comment_upload{
     required String text,
     required String uid,
     required String profilepic,
-    required String username
+    required String username,
+    required String category,
 
 })async {
 try{
   if(text.isNotEmpty){
     String commentid= Uuid().v1();
-    _firestore.collection('Forum_posts').doc(postid).collection('Replies').doc(commentid).set({
+    _firestore.collection('Forum_posts').doc(category).collection('posts').doc(postid).collection('Replies').doc(commentid).set({
       'profile_pic': profilepic,
       'username': username,
       'uid': uid,

@@ -10,8 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class Forum_upload extends StatefulWidget {
-  const Forum_upload({super.key});
-
+  const Forum_upload({super.key,required this.category});
+final category;
   @override
   State<StatefulWidget> createState() {
     return _forum_uploadstate();
@@ -72,7 +72,7 @@ TaskSnapshot snap = await storageref.putData(_file!);
 
 
 
-String res = await Forum_model().Upload(Question: qcontroller.text,image: iurl);
+String res = await Forum_model().Upload(Question: qcontroller.text,image: iurl,cat: widget.category);
 if(res=='sucess'){
   setState(() {
     _isloadin=false;
