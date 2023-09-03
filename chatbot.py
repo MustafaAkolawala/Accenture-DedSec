@@ -69,4 +69,33 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 model.fit(training, output, epochs=1000, batch_size=8, verbose=1) 
 model.save("model_keras.h5")
 
-    
+
+def generate_response(query, bag_of_words):
+    bag = [0 for _ in range(len(bag_of_words))]
+
+    s_words = nltk.word_tokenize(query)
+    s_words = [stemmer.stem(word.lower()) for word in s_words if word != '?']
+
+    for i in s_words:
+        for j, w in enumerate(bag_of_words):
+            if w == i:
+                bag[j] = 1
+            
+    return np.array(bag)
+
+def chat():
+    print("Start talking with the bot (type quit to stop)!")
+    while True:
+        inp = input("You: ")
+        if inp.lower() == "quit":
+            break
+
+        results = model.predict([generate_response(inp, words)])
+        results_index = np.argmax(results)
+        tag = labels[results_index]
+
+        for tg in data["intents"]:
+            if tg['tag'] == tag:
+                responses = tg['responses']
+
+        print(random.choice(responses))
