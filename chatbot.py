@@ -9,11 +9,14 @@ import random
 import json
 import pickle
 
+# Initialize the Lancaster Stemmer
 stemmer = LancasterStemmer()
 
+# Load the intents data from a JSON file
 with open("intent.json") as file:
     data = json.load(file)
 
+# Define a function to develop the neural network model
 def develop_model(input_size,output_size):
     model = Sequential([
         Dense(8, input_shape=(input_size,), activation='relu'),
@@ -26,6 +29,7 @@ def develop_model(input_size,output_size):
 
     return model
 
+# Define a function to convert a user query into a bag of words
 def bag_of_words(query, words):
     bag = [0 for _ in range(len(words))]
 
@@ -38,6 +42,7 @@ def bag_of_words(query, words):
 
     return bag  
 
+# Define the chat function
 def chat():
     print("Start talking with the bot (type quit to stop)!")
     while True:
@@ -45,22 +50,26 @@ def chat():
         if inp.lower() == "quit":
             break
         if use_pre_trained_model and pre_trained_model:
-            results = pre_trained_model.predict([bag_of_words(inp, words)])
+            results = pre_trained_model.predict([bag_of_words(inp, words)])[0]
         else:    
-            results = model.predict([bag_of_words(inp, words)])
+            results = model.predict([bag_of_words(inp, words)])[0]
 
         results_index = np.argmax(results)
         tag = labels[results_index]
         
-        for tg in data["intents"]:
-            if tg['tag'] == tag:
-                responses = tg['responses']
+        if results[results_index] > 0.7:
+            for tg in data["intents"]:
+                if tg['tag'] == tag:
+                    responses = tg['responses']
+                    print(random.choice(responses))
+        else:
+            print("I apologise but I can't quite get you, could you please repeat your query")            
 
-        print(random.choice(responses))
-
+# Initialize variables for pre-trained model and flag for using it
 pre_trained_model = None
 use_pre_trained_model = False
 
+# Attempt to load pre-processing data and pre-trained model
 try:
     with open("data.pickle", "rb") as f:
         words, labels, training, output = pickle.load(f)
@@ -73,6 +82,8 @@ try:
         pass
 
 except FileNotFoundError:
+    # If pre-processing data or pre-trained model not found, perform data processing and training
+    words = []
     words = []
     labels = []
     docs_x = []
@@ -124,8 +135,11 @@ except FileNotFoundError:
     input_size = len(training[0])
     output_size = len(output[0])
 
+    # Create and train the neural network model
     model = develop_model(input_size,output_size)
     model.fit(training, output, epochs=1000, batch_size=8, verbose=1) 
     model.save("model_keras.h5")
 
-chat()
+# Entry point of the script
+if __name__=='__main__':
+    chat()
