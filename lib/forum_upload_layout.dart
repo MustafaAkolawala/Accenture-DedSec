@@ -73,7 +73,7 @@ TaskSnapshot snap = await storageref.putData(_file!);
 
 
 String res = await Forum_model().Upload(Question: qcontroller.text,image: iurl,cat: widget.category);
-if(res=='sucess'){
+if(res=='success'){
   setState(() {
     _isloadin=false;
   });

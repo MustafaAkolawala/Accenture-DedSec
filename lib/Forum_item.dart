@@ -20,8 +20,8 @@ class Forumitem extends StatefulWidget {
 
 class _ForumitemState extends State<Forumitem> {
   FirebaseAuth _auth=  FirebaseAuth.instance;
-  late List Likes;
-  
+   List? Likes;
+   bool? isliked;
   
   
   
@@ -29,16 +29,25 @@ class _ForumitemState extends State<Forumitem> {
   Future <void> likepost(String postid,String uid, List likes)async {
     try{
       if(likes.contains(uid)){
+        setState(() {
+          isliked=false;
+        });
         await FirebaseFirestore.instance.collection('Forum_posts').doc(widget.category).collection('posts').doc(postid).update({
 
           'Likes':FieldValue.arrayRemove([uid]),
+
         });
+
 
       }
       else{
+        setState(() {
+          isliked=true;
+        });
         await FirebaseFirestore.instance.collection('Forum_posts').doc(widget.category).collection('posts').doc(postid).update({
           'Likes':FieldValue.arrayUnion([uid]),
         });
+
       }
     }
     catch(e){
@@ -56,7 +65,7 @@ class _ForumitemState extends State<Forumitem> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async { Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>Forum_categories(),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero)); return true; },
+      onWillPop: () async { Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>Forum_categories(/**/),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero)); return true; },
       child: GestureDetector(
         onTap: () {
           Navigator.pushReplacement(
@@ -69,9 +78,10 @@ class _ForumitemState extends State<Forumitem> {
                       pid: widget.snap['Post_id'],
                       date: DateFormat.yMMMd().format(
                         widget.snap['Date_published'].toDate(),
+                        
 
                       ),
-                  cat: widget.category,)));
+                  cat: widget.category, uid: widget.snap['Uid'],)));
         },
         child: Card(
           child: Padding(
@@ -120,7 +130,7 @@ class _ForumitemState extends State<Forumitem> {
                   children: [
 
                     TextButton.icon(
-                        icon: Likes.contains([_auth.currentUser!.uid])?
+                        icon: isliked==true?
                              Icon(Icons.thumb_up_alt):
                              Icon(Icons.thumb_up_alt_outlined),
                         onPressed: () {

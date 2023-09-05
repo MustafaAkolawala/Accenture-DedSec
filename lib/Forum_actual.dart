@@ -3,12 +3,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:hackathon/Comments_display.dart';
 import 'package:hackathon/Forum_categories.dart';
 import 'package:hackathon/comment_card.dart';
 import 'package:hackathon/comments.dart';
 import 'package:hackathon/profile.dart';
 import 'package:hackathon/settings.dart';
 
+import 'all_profile.dart';
 import 'chatbot.dart';
 import 'home_screen.dart';
 
@@ -20,7 +22,8 @@ class Forum_actual extends StatelessWidget {
       required this.image,
       required this.pid,
       required this.date,
-      required this.cat});
+      required this.cat,
+      required this.uid});
 
   final question;
   final profile_img;
@@ -28,9 +31,16 @@ class Forum_actual extends StatelessWidget {
   final pid;
   final date;
   final cat;
+  final uid;
 
   @override
   Widget build(BuildContext context) {
+    void _addoverlay() {
+      showModalBottomSheet(
+
+          context: context,
+          builder: (ctx) => Comments_actual(postid: pid, category: cat));
+    }
     final post = pid;
     return Scaffold(
       appBar: AppBar(
@@ -120,17 +130,23 @@ class Forum_actual extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    foregroundImage: NetworkImage(profile_img),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(question),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: (){Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>Profile_all(uid: uid),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero));},
+                      child: CircleAvatar(
+                        foregroundImage: NetworkImage(profile_img),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(question),
+                  ],
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -145,28 +161,29 @@ class Forum_actual extends StatelessWidget {
                 height: 30,
               ),
               Image.network(image),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection('Forum_posts').doc(cat).collection('posts')
-                            .doc(post)
-                            .collection('Replies').orderBy('likes',descending: true)
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                          return ListView.builder(
-                            shrinkWrap: true,
-                              itemCount: snapshot.data!.docs.length,
-                              itemBuilder: (context, index) => Comment_card(snap: snapshot.data!.docs[index].data(),postid: pid,cat: cat,));
-                        })
-                  ],
-                ),
-              )
+          StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('Forum_posts').doc(cat).collection('posts')
+                  .doc(pid)
+                  .collection('Replies').orderBy('likes',descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) => Comment_card(snap: snapshot.data!.docs[index].data(),postid: pid,cat: cat,));
+              })
+              //ElevatedButton(onPressed: _addoverlay, child: Icon(Icons.chat_rounded))
+              
+
+
+
+
             ],
           ),
         ),

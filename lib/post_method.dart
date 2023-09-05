@@ -14,7 +14,7 @@ class post_method{
   Future<void> delete(String postid,String cat)async{
     String res = '';
     DocumentSnapshot snap =
-    await _firestore.collection('Forum_posts').doc(postid).get();
+    await _firestore.collection('Forum_posts').doc(cat).collection('posts').doc(postid).get();
     final uid = (snap.data() as Map<String,dynamic>)['Uid'];
 
 try{

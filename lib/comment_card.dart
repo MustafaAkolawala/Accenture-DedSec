@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hackathon/all_profile.dart';
 import 'package:intl/intl.dart';
 
 class Comment_card extends StatefulWidget {
@@ -68,7 +69,7 @@ class _commentcardstate extends State<Comment_card> {
                     widget.snap['profile_pic']),radius: 18,
               ),
               SizedBox(width: 20,),
-               Text(widget.snap['username']),
+               TextButton( onPressed: () { Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>Profile_all(uid: widget.snap['uid']),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero)); }, child: Text(widget.snap['username']),),
 
 
 

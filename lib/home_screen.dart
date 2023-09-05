@@ -102,7 +102,7 @@ Forum(),
             //tabBackgroundColor: Colors.blueGrey.shade900,
 
             duration: Duration(milliseconds: 900),
-            tabs: [
+            tabs: const [
               GButton(
                 icon: Icons.home,
                 text: 'Home',
