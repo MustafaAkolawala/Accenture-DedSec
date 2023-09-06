@@ -5,6 +5,7 @@ import 'package:hackathon/Forum_categories.dart';
 import 'package:hackathon/bottommodal.dart';
 import 'package:hackathon/change_pass.dart';
 import 'package:hackathon/delete_user.dart';
+import 'package:hackathon/linkdin.dart';
 import 'package:hackathon/profile.dart';
 import 'package:hackathon/update_bio.dart';
 import 'package:hackathon/update_username.dart';
@@ -52,6 +53,13 @@ class _settingstate extends State<Setting> {
 
         context: context,
         builder: (ctx) => Updatebio());
+  }
+  void _addoverlay5() {
+    showModalBottomSheet(
+
+
+        context: context,
+        builder: (ctx) => Linkdin());
   }
 
 
@@ -132,6 +140,7 @@ class _settingstate extends State<Setting> {
               TextButton(
                   onPressed: _addoverlay, child: const Text('Update personal details')),
               TextButton(onPressed: _addoverlay4, child: const Text('Update BIO')),
+              TextButton(onPressed: _addoverlay5, child: const Text('Add Linkdin Profile')),
               TextButton(onPressed: _addoverlay2, child: const Text('Change Password')),
               TextButton(onPressed: _addoverlay3, child: const Text('Delete Account')),
 

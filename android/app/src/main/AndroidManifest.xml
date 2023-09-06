@@ -1,9 +1,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hackathon">
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.View"/>
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https"/>
+
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND"/>
+
+            <data android:scheme="*/*"/>
+
+        </intent>
+
+    </queries>
    <application
         android:label="hackathon"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+       >
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -31,4 +48,5 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+
 </manifest>

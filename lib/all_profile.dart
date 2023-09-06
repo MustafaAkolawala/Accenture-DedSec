@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon/Forum_categories.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Profile_all extends StatefulWidget {
   const Profile_all({super.key,required this.uid});
@@ -14,6 +15,22 @@ final uid;
 }
 
 class _Profileallstate extends State<Profile_all> {
+  _linkedin(String url) async {
+    Uri url1= Uri.parse(url);
+
+
+      await launchUrl(url1,mode: LaunchMode.externalApplication);
+
+
+  }
+  _emailto(String url) async {
+    Uri url1= Uri(scheme: 'mailto',path: url);
+
+
+    await launchUrl(url1);
+
+
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(onWillPop: () async { Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>Forum_categories(),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero)); return true; },
@@ -109,6 +126,17 @@ class _Profileallstate extends State<Profile_all> {
           const SizedBox(
             height: 30,
           ),
+           Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [doc['Linkdin_url']!=null?
+              ElevatedButton.icon(onPressed: (){_linkedin(doc['Linkdin_url']);}, icon: Icon(Icons.link_rounded),
+               label: const Text('Linkdin'),):ElevatedButton(onPressed: (){}, child: Text('none')),
+
+              doc['email_id']!=null?
+              ElevatedButton.icon(onPressed: (){_emailto(doc['email_id']);}, icon: Icon(Icons.email_outlined),
+                label: const Text('Email'),):ElevatedButton(onPressed: (){}, child: Text('none')),
+
+            ],
+          )
         ],),
       );
     }

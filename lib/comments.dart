@@ -97,7 +97,7 @@ SizedBox(width: 320,
 
 
 
-    }),*/
+    }),
 
 
            Expanded(
@@ -118,12 +118,11 @@ SizedBox(width: 320,
 
                ]),
              ),
-           ),
-           ]
-        ),
+           ),*/
 
 
-           /* SizedBox(
+
+            SizedBox(
               width: 320,
               child: TextField(
                 controller: comcontroller,
@@ -131,7 +130,7 @@ SizedBox(width: 320,
               ),
             ),
           ],
-        ),*/
+        ),
         SizedBox(
           height: 20,
         ),
