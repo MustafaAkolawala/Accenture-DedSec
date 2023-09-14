@@ -9,6 +9,7 @@ Future<String>Upload({
   required String Question,
   required String image,
   required String cat,
+  required String pdfurl,
 })
 
 async{
@@ -25,6 +26,7 @@ String postid= Uuid().v1();
         'Question': Question,
         'Uid': userid,
         'image_url': image,
+        'pdf_url': pdfurl,
         'Post_id': postid,
         'Date_published': DateTime.now(),
         'Profile_image': Profile_image,

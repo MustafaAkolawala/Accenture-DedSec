@@ -78,10 +78,12 @@ class _ForumitemState extends State<Forumitem> {
                       pid: widget.snap['Post_id'],
                       date: DateFormat.yMMMd().format(
                         widget.snap['Date_published'].toDate(),
+
                         
 
                       ),
-                  cat: widget.category, uid: widget.snap['Uid'],)));
+                  cat: widget.category, uid: widget.snap['Uid'],
+                  pdf_url: widget.snap['pdf_url'],)));
         },
         child: Card(
           child: Padding(

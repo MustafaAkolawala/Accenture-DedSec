@@ -7,6 +7,7 @@ import 'package:hackathon/Comments_display.dart';
 import 'package:hackathon/Forum_categories.dart';
 import 'package:hackathon/comment_card.dart';
 import 'package:hackathon/comments.dart';
+import 'package:hackathon/pdf_view.dart';
 import 'package:hackathon/profile.dart';
 import 'package:hackathon/settings.dart';
 
@@ -23,7 +24,8 @@ class Forum_actual extends StatelessWidget {
       required this.pid,
       required this.date,
       required this.cat,
-      required this.uid});
+      required this.uid,
+      required this.pdf_url});
 
   final question;
   final profile_img;
@@ -32,6 +34,7 @@ class Forum_actual extends StatelessWidget {
   final date;
   final cat;
   final uid;
+  final pdf_url;
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +163,13 @@ class Forum_actual extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
+              image==''?
+              SizedBox(height: 2,):
               Image.network(image),
+          SizedBox(height: 10,),
+          pdf_url==''?
+              SizedBox(height: 2,):
+              ElevatedButton(onPressed: (){Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>PDF(pdf_url: pdf_url),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero));}, child: Text('View PDF')),
           StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('Forum_posts').doc(cat).collection('posts')
