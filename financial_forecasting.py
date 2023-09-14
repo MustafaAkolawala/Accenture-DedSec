@@ -3,85 +3,108 @@ import numpy as np
 import matplotlib.pyplot as plt		 
 import tensorflow as tf				 
 from tensorflow import keras	
-from datetime import datetime , timedelta
-	 
-'''
-def get_data(csv_file_path):
-    list_row = []  
-    date = []      
-    traffic = []   
+from sklearn.preprocessing import RobustScaler, OneHotEncoder
+from datetime import datetime, timedelta
+import holidays
 
-    try:
-        with open(csv_file_path, 'r', newline='',  encoding= 'ISO-8859-1') as csvfile:
-            columns = ['SALES','ORDERDATE']
-            csvreader = pd.read_csv(csvfile, usecols = columns )
-
-            date = csvreader['ORDERDATE'].tolist()
-            traffic = csvreader['SALES'].tolist()
-            list_row = csvreader.values.tolist()
-
-    except FileNotFoundError:
-        print(f"File not found: {csv_file_path}")
-    
-    return list_row, date, traffic
-
-list_row,date,traffic = get_data('sales_data_sample.csv')
-'''
-
-
-# Load your CSV file into a DataFrame (assuming you have already removed the time component)
 df = pd.read_csv('sale_sample.csv')
 
-# Define the initial sales value for the first year
-initial_sales = 1000
+df['SALES'] = df['SALES'].str.replace(r'[^0-9]', '', regex=True)
+df['SALES'] = pd.to_numeric(df['SALES'])
+scaler = RobustScaler()
+scaled_sales = scaler.fit_transform(df[['SALES']])
+df['SALES'] = scaled_sales
 
-# Define the annual growth rate (percentage increase)
-annual_growth_rate = 0.1  # 10% annual growth rate
 
-# Define parameters for random fluctuations
-fluctuation_mean = 0  # Mean of fluctuations (zero for no net change)
-fluctuation_std = 50  # Standard deviation of fluctuations
+def get_data(df):
+    list_row = []
+    date = []
+    traffic = []
 
-# Initialize a variable to keep track of the current year
-current_year = None
+    # Define the country for which you want to check holidays (e.g., 'US' for United States)
+    indian_holidays = holidays.India()
 
-# Initialize a variable to keep track of current sales
-current_sales = initial_sales
+    for index, row in df.iterrows():
+        # Convert the date column to datetime format
+        current_date = datetime.strptime(row['DATE'], '%Y-%m-%d')
 
-# Create an array to store sales data
-sales_data = []
+        # Check if the current date is a holiday
+        is_holiday = 1 if current_date in indian_holidays else 0
 
-df['DATE'] = pd.to_datetime(df['DATE'])
-# Iterate through the DataFrame to calculate sales data based on the pattern
-for index, row in df.iterrows():
-    # Extract the year from the date (assuming 'DATEORDER' is in datetime format)
-    year = row['DATE'].year
+        list_row.append([current_date, row['SALES'], is_holiday])
+        date.append(current_date)
+        traffic.append(row['SALES'])
+        
+    date_to_weekday = {}
+    for date_str in date:
+        weekday = current_date.strftime('%A')
+        date_to_weekday[date_str] = weekday
 
-    # Check if a new year has started
-    if year != current_year:
-        current_year = year
-        current_sales = initial_sales  # Reset sales at the beginning of the year
-
-    # Calculate the annual growth
-    annual_growth = current_sales * annual_growth_rate
-
-    # Add random fluctuations
-    fluctuation = np.random.normal(fluctuation_mean, fluctuation_std)
+    # Append weekdays to the list_row based on the date column
+    for i, row in enumerate(list_row):
+        order_date = row[0]
+        weekday = date_to_weekday.get(order_date)
+        if weekday:
+            row.append(weekday)
+        else:
+            row.append("") 
+    new_df = pd.DataFrame(list_row, columns=['DATE', 'SALES', 'HOLIDAY', 'WEEKDAY'])
     
-    increase_sales = np.random.choice([True, False])
+    return new_df, date, traffic , list_row
 
-    # Update sales with annual growth and fluctuations
-    if increase_sales:
-        current_sales += annual_growth + fluctuation
-    else:
-        current_sales -= annual_growth + fluctuation
-
+def date_to_enc(date_series):
+    day_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     
-    # Append the calculated sales value to the list
-    sales_data.append(current_sales)
+    # Encode days, months, and years
+    encoded_days = pd.get_dummies(date_series.dt.day_name())
+    encoded_months = pd.get_dummies(date_series.dt.month_name())
+    encoded_years = pd.get_dummies(date_series.dt.year.astype(str))
+    
+    return encoded_days, encoded_months, encoded_years
 
-# Add the sales data as a new column in the DataFrame
-df['SALES'] = sales_data
+def conversion(list_row):
+    # Create an instance of OneHotEncoder
+    encoder = OneHotEncoder(sparse=False)
 
-# Save the updated DataFrame back to the CSV file (overwrite the existing file)
-df.to_csv('sale_sample.csv', index=False)
+    # Extract the day names from the 'list_row' argument
+    day_names = [row[3] for row in list_row]
+
+    # Fit the encoder on the day names
+    encoder.fit(np.array(day_names).reshape(-1, 1))
+
+    inp_day = []
+    inp_mon = []
+    inp_year = []
+    inp_week = []
+    inp_hol = []
+    out = []
+
+    for row in list_row:
+        # Filter out date from list_row
+        date = row[0]
+
+        # The date was split into three values: date, month, and year.
+        d1, d2, d3 = date_to_enc(pd.Series(date))
+        inp_day.append(d1.values[0])
+        inp_mon.append(d2.values[0])
+        inp_year.append(d3.values[0])
+
+        week2 = encoder.transform([[row[3]]]).flatten()
+        inp_week.append(week2)
+
+        inp_hol.append([row[2]])
+
+        t1 = row[1]
+        out.append(t1)
+
+    return inp_day, inp_mon, inp_year, inp_week, inp_hol, out
+
+df , date , traffic , list_row = get_data(df)
+inp_day,inp_mon,inp_year,inp_week,inp_hol,out = conversion(list_row)
+
+inp_day = np.array(inp_day)
+inp_mon = np.array(inp_mon)
+inp_year = np.array(inp_year)
+inp_week = np.array(inp_week)
+inp_hol = np.array(inp_hol)
