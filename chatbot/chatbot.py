@@ -1,5 +1,5 @@
 import nltk
-from nltk.stem.lancaster import LancasterStemmer
+from nltk.stem import LancasterStemmer
 import numpy as np
 import tensorflow
 from tensorflow import keras
@@ -83,7 +83,6 @@ try:
 
 except FileNotFoundError:
     # If pre-processing data or pre-trained model not found, perform data processing and training
-    words = []
     words = []
     labels = []
     docs_x = []
