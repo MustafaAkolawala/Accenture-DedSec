@@ -1,14 +1,19 @@
 {
     "intents": [
         {
-            "tag": "greeting",
+            "tag": "primary greetings",
             "patterns": [
                 "Hello",
                 "Hi",
                 "Hey",
                 "Good morning",
                 "Good afternoon",
-                "Good evening"
+                "Good evening",
+                "Yo",
+                "How have you been",
+                "What's up",
+                "How are you doing",
+                "It's good to see you"
             ],
             "responses": [
                 "Hello! How can I assist you today?",
@@ -25,7 +30,18 @@
                 "See you later",
                 "Bye",
                 "Farewell",
-                "Take care"
+                "Take care",
+                "Catch you later",
+                "It was a pleasure talking to you",
+                "Talk to you later",
+                "Goodbye for now",
+                "So long",
+                "See you soon",
+                "Bye-bye",
+                "Until next time",
+                "Have a great day",
+                "Take it easy",
+                "Farewell, chatbot"
             ],
             "responses": [
                 "Goodbye! If you have more questions, feel free to ask.",
@@ -36,12 +52,132 @@
             "context_set": ""
         },
         {
+            "tag": "type of business",
+            "patterns": [
+                "What type of business do I have?",
+                "Tell me my business type",
+                "Business entity type",
+                "Types of businesses",
+                "Different business entities",
+                "Explain my business structure",
+                "I want to know my company type",
+                "Can you clarify my business entity",
+                "Define my business organization",
+                "Tell me about my company structure",
+                "My business category",
+                "What is my business setup?",
+                "Describe my business form",
+                "I need info about my company type"
+            ],
+            "responses": [
+                "Businesses can take various forms. Here are the main types:\n 1. Individual\n 2. Proprietorship firm\n 3. Partnership firm\n 4. Limited Liability partnership\n 5. Joint stock company"
+            ],
+            "context_set": "business_types_context"
+        },
+        {
+            "tag": "individual_business",
+            "patterns": [
+                "I have an individual business",
+                "Sole proprietorship",
+                "Single owner business",
+                "One-person company",
+                "Explain individual business",
+                "Tell me about sole proprietorship",
+                "What is a single-owner business?",
+                "I'm the sole owner of my business",
+                "Business owned by one person"
+            ],
+            "responses": [
+                "An individual business, also known as a sole proprietorship, is owned and operated by a single person. The owner has full control but is personally liable for the business's debts and obligations."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "proprietorship_firm",
+            "patterns": [
+                "I have a proprietorship firm",
+                "My business is a proprietorship",
+                "Family-owned business",
+                "Explain proprietorship firm",
+                "Tell me about family-owned businesses",
+                "What is a sole owner firm?",
+                "My business is family-run"
+            ],
+            "responses": [
+                "A proprietorship firm is similar to an individual business but may involve a single owner or a small family-owned business. The owner(s) have full control and are personally responsible for business liabilities."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "partnership_firm",
+            "patterns": [
+                "I'm in a partnership firm",
+                "My business is a partnership",
+                "Business with partners",
+                "Explain partnership firm",
+                "Tell me about partnerships",
+                "What is a business partnership?",
+                "I have business partners"
+            ],
+            "responses": [
+                "A partnership firm is formed when two or more individuals or entities collaborate to run a business. Partners share profits, losses, and responsibilities, and they may have personal liability depending on the type of partnership."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "llp",
+            "patterns": [
+                "I have an LLP",
+                "My business is an LLP",
+                "Explain Limited Liability Partnership",
+                "Tell me about LLPs",
+                "What is an LLP?",
+                "I'm in a Limited Liability Partnership"
+            ],
+            "responses": [
+                "A Limited Liability Partnership (LLP) combines the features of a partnership and a corporation. It offers limited liability protection to its partners, meaning their personal assets are generally not at risk for business debts."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "joint_stock_company",
+            "patterns": [
+                "I have a joint stock company",
+                "My business is a company",
+                "Explain joint stock company",
+                "Tell me about companies",
+                "What is a joint stock company?",
+                "I own shares in a company"
+            ],
+            "responses": [
+                "A joint stock company, often referred to as a company, is a legal entity distinct from its shareholders. Ownership is represented by shares of stock, and shareholders have limited liability, meaning their personal assets are typically protected from business debts."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "default_business_type",
+            "patterns": [
+                "Other",
+                "Not sure",
+                "I'm unsure about my business type",
+                "I don't know my company structure",
+                "Help me determine my business entity",
+                "Can you assist with business classification?"
+            ],
+            "responses": [
+                "If you're uncertain about your business type, it's advisable to seek advice from a legal or business professional who can help you determine the most suitable structure."
+            ],
+            "context_set": ""
+        },
+        {
             "tag": "documents",
             "patterns": [
-                "What documents do I need for my business?",
-                "Can you tell me the required documents for my business?",
-                "List of documents for my business",
-                "Documentation for my business"
+                "What legal documents do I need for my business?",
+                "Can you explain the paperwork required for my business?",
+                "List of legal documents for my business",
+                "Documentation checklist for my business",
+                "Paperwork for starting a business",
+                "What forms and permits do I need for my business?"
             ],
             "responses": [
                 "Sure, I can help with that. The required documents for your business may include:",
@@ -52,10 +188,12 @@
         {
             "tag": "tax_incentives",
             "patterns": [
-                "Tell me about tax incentives",
-                "What tax benefits are available?",
-                "Tax incentives for businesses",
-                "How can I save on taxes?"
+                "Tell me about tax benefits for small businesses",
+                "Explain tax incentives for startups",
+                "How can I reduce taxes for my business?",
+                "Tax deductions for businesses",
+                "Tax credits for business owners",
+                "Ways to save on taxes as a business"
             ],
             "responses": [
                 "Tax incentives can vary depending on your business type and location. Some common tax incentives include:",
@@ -66,9 +204,12 @@
         {
             "tag": "government_schemes",
             "patterns": [
-                "Tell me about government schemes",
-                "What government programs are available for businesses?",
-                "Government support for my business"
+                "Tell me about government grants for businesses",
+                "What are the government programs to support entrepreneurs?",
+                "Government initiatives for startups",
+                "How can I benefit from government schemes?",
+                "Government grants and subsidies for small businesses",
+                "List of government programs for business owners"
             ],
             "responses": [
                 "There are various government schemes and programs that can benefit businesses. Some of these include:",
@@ -77,27 +218,19 @@
             "context_set": "government_schemes_context"
         },
         {
-            "tag": "business_types",
-            "patterns": [
-                "What are the different types of businesses?",
-                "Types of business entities",
-                "Business structures"
-            ],
-            "responses": [
-                "There are several types of businesses, including:",
-                "Business entities can take various forms, such as:"
-            ],
-            "context_set": "business_types_context"
-        },
-        {
             "tag": "startup_advice",
             "patterns": [
-                "I'm starting a new business",
-                "Startup guidance",
-                "Advice for startups"
+                "I'm launching my own business",
+                "Starting my first business",
+                "Advice for new entrepreneurs",
+                "Tips for launching a startup",
+                "Guidance for startup founders",
+                "Help me with my startup",
+                "I'm a novice entrepreneur",
+                "Advice for newbie business owners"
             ],
             "responses": [
-                "Starting a new business can be exciting! Here's some advice for startups:",
+                "Starting a new business can be exciting and challenging! Here's some advice for startups:",
                 "If you're embarking on a startup journey, consider the following tips:"
             ],
             "context_set": "startup_advice_context"
