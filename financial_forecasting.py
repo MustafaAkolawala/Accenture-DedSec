@@ -16,6 +16,12 @@ scaled_sales = scaler.fit_transform(df[['SALES']])
 df['SALES'] = scaled_sales
 
 
+seasons = {
+    'Summer': range(4, 7),      
+    'Monsoon': range(7, 10),    
+    'Winter': [11, 12, 1],     
+}
+
 def get_data(df):
     list_row = []
     date = []
@@ -108,3 +114,49 @@ inp_mon = np.array(inp_mon)
 inp_year = np.array(inp_year)
 inp_week = np.array(inp_week)
 inp_hol = np.array(inp_hol)
+
+def cur_season(seasons, date):
+
+    month = int(date.split('-')[1])
+    for season, month_range in seasons.items():
+        if month in month_range:
+            return season
+
+    return 'Unknown Season'
+
+def year_all():
+  
+    return [2015, 2016, 2017, 2018, 2019, 2020, 2021]  
+
+def other_inputs(season, list_row):
+    inp7 = []
+    inp_prev = []
+    inp_sess = []
+    count = 0  
+    for row in list_row:
+        ind = count
+        count += 1
+        d = row[0]  
+        d = row[0].strftime('%Y-%m-%d')
+        d_split = d.split('-')
+        if d_split[0] == str(year_all()[0]):
+            continue
+        sess = cur_season(season, d)  
+        inp_sess.append(sess)  
+        t7 = []  
+        t_prev = []  
+        t_prev.append(list_row[ind - 365][1])  
+        for j in range(0, 7):
+            t7.append(list_row[ind - j - 1][1]) 
+        inp7.append(t7)
+        inp_prev.append(t_prev)
+
+    return inp7, inp_prev, inp_sess
+
+inp7,inp_prev,inp_sess = other_inputs(seasons,list_row)
+inp7 = np.array(inp7)
+inp7= inp7.reshape(inp7.shape[0],inp7.shape[1],1)
+inp_prev = np.array(inp_prev)
+inp_sess = np.array(inp_sess)
+
+print(inp7)
