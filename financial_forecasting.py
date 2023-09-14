@@ -6,6 +6,10 @@ from tensorflow import keras
 from sklearn.preprocessing import RobustScaler, OneHotEncoder
 from datetime import datetime, timedelta
 import holidays
+from tensorflow import keras
+from keras.models import Model
+from keras.layers import Input, Dense,LSTM,Flatten
+from keras.layers import concatenate
 
 df = pd.read_csv('sale_sample.csv')
 
@@ -158,5 +162,28 @@ inp7 = np.array(inp7)
 inp7= inp7.reshape(inp7.shape[0],inp7.shape[1],1)
 inp_prev = np.array(inp_prev)
 inp_sess = np.array(inp_sess)
+inp_sess = inp_sess.reshape(-1, 1)
 
-print(inp7)
+input_day = Input(shape=(inp_day.shape[1],),name = 'input_day')
+input_mon = Input(shape=(inp_mon.shape[1],),name = 'input_mon')
+input_year = Input(shape=(inp_year.shape[1],),name = 'input_year')
+input_week = Input(shape=(inp_week.shape[1],),name = 'input_week')
+input_hol = Input(shape=(inp_hol.shape[1],),name = 'input_hol')
+input_day7 = Input(shape=(inp7.shape[1],inp7.shape[2]),name = 'input_day7')
+input_day_prev = Input(shape=(inp_prev.shape[1],),name = 'input_day_prev')
+input_day_sess = Input(shape=(inp_sess.shape[1],),name = 'input_day_sess')
+x1 = Dense(5, activation='relu')(input_day)
+x2 = Dense(5, activation='relu')(input_mon)
+x3 = Dense(5, activation='relu')(input_year)
+x4 = Dense(5, activation='relu')(input_week)
+x5 = Dense(5, activation='relu')(input_hol)
+x_6 = Dense(5, activation='relu')(input_day7)
+x__6 = LSTM(5,return_sequences=True)(x_6) 
+x6 = Flatten()(x__6) 
+x7 = Dense(5, activation='relu')(input_day_prev)
+x8 = Dense(5, activation='relu')(input_day_sess)
+c = concatenate([x1,x2,x3,x4,x5,x6,x7,x8])
+layer1 = Dense(64,activation='relu')(c)
+outputs = Dense(1, activation='sigmoid')(layer1) 
+model = Model(inputs=[input_day,input_mon,input_year,input_week,input_hol,input_day7,input_day_prev,input_day_sess], outputs=outputs)
+model.summary()
