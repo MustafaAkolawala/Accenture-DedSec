@@ -10,6 +10,8 @@ from tensorflow import keras
 from keras.models import Model
 from keras.layers import Input, Dense,LSTM,Flatten
 from keras.layers import concatenate
+from keras.optimizers import RMSprop
+
 
 df = pd.read_csv('sale_sample.csv')
 
@@ -187,3 +189,19 @@ layer1 = Dense(64,activation='relu')(c)
 outputs = Dense(1, activation='sigmoid')(layer1) 
 model = Model(inputs=[input_day,input_mon,input_year,input_week,input_hol,input_day7,input_day_prev,input_day_sess], outputs=outputs)
 model.summary()
+
+
+model.compile(loss=['mean_squared_error'],
+			optimizer = 'adam',
+			metrics = ['acc'] 
+			)				 
+
+history = model.fit(
+		x = [inp_day,inp_mon,inp_year,inp_week,inp_hol,inp7,inp_prev,inp_sess],
+		y = out,
+		batch_size=16,
+		steps_per_epoch=50,
+		epochs = 15,
+		verbose=1,
+		shuffle =False
+		)
