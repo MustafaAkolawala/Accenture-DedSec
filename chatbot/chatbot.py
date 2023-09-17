@@ -1,5 +1,5 @@
 import nltk
-from nltk.stem import LancasterStemmer
+from nltk.stem import WordNetLemmatizer
 import numpy as np
 import tensorflow
 from tensorflow import keras
@@ -10,7 +10,7 @@ import json
 import pickle
 
 # Initialize the Lancaster Stemmer
-stemmer = LancasterStemmer()
+lematizer = WordNetLemmatizer()
 
 # Load the intents data from a JSON file
 with open("intent.json") as file:
@@ -34,7 +34,7 @@ def bag_of_words(query, words):
     bag = [0 for _ in range(len(words))]
 
     s_words = nltk.word_tokenize(query)
-    s_words = [stemmer.stem(word.lower()) for word in s_words if word != '?']
+    s_words = [lematizer.lemmatize(word.lower()) for word in s_words if word != '?']
 
     for i in s_words:
         if i in words:
@@ -98,7 +98,7 @@ except FileNotFoundError:
         if intent["tag"] not in labels:
             labels.append(intent["tag"])
 
-    words = [stemmer.stem(w.lower()) for w in words if w != "?"]
+    words = [lematizer.lemmatize(w.lower()) for w in words if w != "?"]
     words = sorted(list(set(words)))
 
     labels = sorted(labels)
@@ -111,7 +111,7 @@ except FileNotFoundError:
     for x, doc in enumerate(docs_x):
         bag = []
 
-        wrds = [stemmer.stem(w.lower()) for w in doc]
+        wrds = [lematizer.lemmatize(w.lower()) for w in doc]
 
         for w in words:
             if w in wrds:
