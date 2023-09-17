@@ -36,8 +36,12 @@ class Forum_actual extends StatelessWidget {
   final uid;
   final pdf_url;
 
+
+
   @override
   Widget build(BuildContext context) {
+
+
     void _addoverlay() {
       showModalBottomSheet(
 

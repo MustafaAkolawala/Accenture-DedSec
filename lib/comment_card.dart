@@ -53,7 +53,7 @@ class _commentcardstate extends State<Comment_card> {
   }
   void initState() {
     Likes = widget.snap['likes'];
-    isliked=false;
+    isliked=widget.snap['likes'].contains(_auth.currentUser!.uid)?true:false;
     super.initState();
   }
   @override

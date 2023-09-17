@@ -7,6 +7,7 @@ import 'package:hackathon/Forum_categories.dart';
 import 'package:hackathon/Forum_item.dart';
 import 'package:hackathon/forum_upload_layout.dart';
 import 'package:hackathon/profile.dart';
+import 'package:hackathon/search.dart';
 import 'package:hackathon/settings.dart';
 
 import 'chatbot.dart';
@@ -56,6 +57,14 @@ class _ForumState extends State<Forum> {
         appBar: AppBar(
           title: const Text('Forum'),
           actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Search(cat: widget.cat,)));
+                },
+                icon: const Icon(Icons.search)),
             DropdownButton<String>(
                 value: Dropdownvalue,
                 hint: Text('Filter'),
@@ -180,11 +189,11 @@ class _ForumState extends State<Forum> {
           stream: Dropdownvalue=='Likes'?FirebaseFirestore.instance
               .collection('Forum_posts')
               .doc(widget.cat)
-              .collection('posts').orderBy('Likes')
+              .collection('posts').orderBy('Likes',descending: true)
               .snapshots():Dropdownvalue=='Recent'?FirebaseFirestore.instance
               .collection('Forum_posts')
               .doc(widget.cat)
-              .collection('posts').orderBy('Date_published')
+              .collection('posts').orderBy('Date_published',descending: true)
               .snapshots():FirebaseFirestore.instance
               .collection('Forum_posts')
               .doc(widget.cat)

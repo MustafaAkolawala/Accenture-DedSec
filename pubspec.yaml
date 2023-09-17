@@ -86,6 +86,7 @@ flutter:
   assets:
     - assets/images/colourful-google-logo-on-white-background-free-vector.jpg
     - assets/images/google_logo.png
+    - assets/pata_nahi.pdf
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

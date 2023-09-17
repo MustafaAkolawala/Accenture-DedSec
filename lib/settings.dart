@@ -141,7 +141,7 @@ class _settingstate extends State<Setting> {
                   onPressed: _addoverlay, child: const Text('Update personal details')),
               TextButton(onPressed: _addoverlay4, child: const Text('Update BIO')),
               TextButton(onPressed: _addoverlay5, child: const Text('Add Linkdin Profile')),
-              TextButton(onPressed: _addoverlay2, child: const Text('Change Password')),
+              //TextButton(onPressed: _addoverlay2, child: const Text('Change Password')),
               TextButton(onPressed: _addoverlay3, child: const Text('Delete Account')),
 
             ],

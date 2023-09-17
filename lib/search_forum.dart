@@ -8,26 +8,26 @@ import 'package:hackathon/Forum_categories.dart';
 import 'package:hackathon/post_method.dart';
 import 'package:intl/intl.dart';
 
-class Forumitem extends StatefulWidget {
-  Forumitem({super.key, required this.snap,required this.category});
+class Search_forum extends StatefulWidget {
+  Search_forum({super.key, required this.snap,required this.category});
 
   final snap;
   final category;
 
   @override
-  State<Forumitem> createState() => _ForumitemState();
+  State<Search_forum> createState() => _ForumitemState();
 }
 
-class _ForumitemState extends State<Forumitem> {
+class _ForumitemState extends State<Search_forum> {
   FirebaseAuth _auth=  FirebaseAuth.instance;
-   List? Likes;
-   bool? isliked;
+  List? Likes;
+  bool? isliked;
 
 
 
-  
-  
-  
+
+
+
 
   Future <void> likepost(String postid,String uid, List likes)async {
     try{
@@ -60,10 +60,10 @@ class _ForumitemState extends State<Forumitem> {
 
   }
 
-@override
+  @override
   void initState() {
-   Likes = widget.snap['Likes'];
-   isliked= widget.snap['Likes'].contains(_auth.currentUser!.uid)?true:false;
+    //Likes = widget.snap['Likes'];
+    isliked= widget.snap['Likes'].contains(_auth.currentUser!.uid)?true:false;
     super.initState();
   }
   @override
@@ -76,18 +76,18 @@ class _ForumitemState extends State<Forumitem> {
               context,
               MaterialPageRoute(
                   builder: (_) => Forum_actual(
-                      question: widget.snap['Question'],
-                      profile_img: widget.snap['Profile_image'],
-                      image: widget.snap['image_url'],
-                      pid: widget.snap['Post_id'],
-                      date: DateFormat.yMMMd().format(
-                        widget.snap['Date_published'].toDate(),
+                    question: widget.snap['Question'],
+                    profile_img: widget.snap['Profile_image'],
+                    image: widget.snap['image_url'],
+                    pid: widget.snap['Post_id'],
+                    date: DateFormat.yMMMd().format(
+                      widget.snap['Date_published'].toDate(),
 
-                        
 
-                      ),
-                  cat: widget.category, uid: widget.snap['Uid'],
-                  pdf_url: widget.snap['pdf_url'],)));
+
+                    ),
+                    cat: widget.category, uid: widget.snap['Uid'],
+                    pdf_url: widget.snap['pdf_url'],)));
         },
         child: Card(
           child: Padding(
@@ -96,36 +96,7 @@ class _ForumitemState extends State<Forumitem> {
               children: [
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Text(widget.snap['Question']),
-                  IconButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) => Dialog(
-                                  child: ListView(
-                                    padding: EdgeInsets.symmetric(vertical: 16),
-                                    shrinkWrap: true,
-                                    children: ['Delete']
-                                        .map(
-                                          (e) => InkWell(
-                                            onTap: () async {
-                                              await post_method()
-                                                  .delete(widget.snap['Post_id'],widget.category);
-                                              Navigator.of(context).pop();
 
-
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 12, horizontal: 16),
-                                              child: Text(e),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                  ),
-                                ));
-                      },
-                      icon: Icon(Icons.more_vert)),
                 ]),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -137,8 +108,8 @@ class _ForumitemState extends State<Forumitem> {
 
                     TextButton.icon(
                         icon: isliked==true?
-                             Icon(Icons.thumb_up_alt):
-                             Icon(Icons.thumb_up_alt_outlined),
+                        Icon(Icons.thumb_up_alt):
+                        Icon(Icons.thumb_up_alt_outlined),
                         onPressed: () {
 
                           likepost(widget.snap['Post_id'], _auth.currentUser!.uid, widget.snap['Likes']);

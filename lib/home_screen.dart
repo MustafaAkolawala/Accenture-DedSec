@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_document_picker/flutter_document_picker.dart';
+
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hackathon/Forum_categories.dart';
 import 'package:hackathon/chatbot.dart';
@@ -7,6 +11,8 @@ import 'package:hackathon/forum.dart';
 import 'package:hackathon/profile.dart';
 import 'package:hackathon/settings.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 
 class Homescreen extends StatefulWidget{
   const Homescreen({super.key});
@@ -17,6 +23,20 @@ class Homescreen extends StatefulWidget{
   }
 }
 class _homescreenstate extends State<Homescreen>{
+  fetchdata(String url, File value) async {
+    final request = http.MultipartRequest("POST",Uri.parse(url));
+  final headers = {"Content_Type": "multipart/form-data"};
+  request.files.add(
+    http.MultipartFile('file',value.readAsBytes().asStream() , value.lengthSync(),filename: value.path.split('/').last)
+      );
+  request.headers.addAll(headers);
+  final response = await request.send();
+  http.Response res = await http.Response.fromStream(response);
+  final response1 = jsonDecode(res.body);
+  final message = response1['message'];
+  print(message);
+
+  }
 
 /*int _selectedindex=0;
 void _navigate(int index){
@@ -116,7 +136,17 @@ Forum(),
           ),
         ),
       ),
-      body: Center(child: Text('succesfully Logged in'),),),
+      body: Center(child: Column(
+        children: [
+          Text('succesfully Logged in'),
+          /*ElevatedButton(onPressed: ()async{
+            final path= await FlutterDocumentPicker.openDocument();
+            File file= File(path!);
+            String url= 'http://7dca-49-36-9-159.ngrok-free.app/upload';
+            fetchdata(url, file);
+          }, child: Text('upload pdf')),*/
+        ],
+      ),),),
     );
   }
 

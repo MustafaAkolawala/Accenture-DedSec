@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hackathon/auth_method.dart';
+import 'package:hackathon/forgot_pass.dart';
 import 'package:hackathon/home_screen.dart';
 
 final _auth = FirebaseAuth.instance;
@@ -112,7 +113,7 @@ class _loginstate extends State<login> {
     }
   }
 
-  Future<UserCredential> googlesignin() async {
+  /*Future<UserCredential> googlesignin() async {
     final GoogleSignInAccount? guser = await GoogleSignIn().signIn();
 
     final GoogleSignInAuthentication gauth = await guser!.authentication;
@@ -134,7 +135,7 @@ class _loginstate extends State<login> {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const Homescreen()));
     return auth;
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -239,14 +240,15 @@ class _loginstate extends State<login> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => const Forgot_pass()));},
                                   child: Text('Forgot Password?'))
                             ],
                           ),
                           const SizedBox(
                             height: 20,
                           ),
-                          const Text('Or continue using'),
+                          /*const Text('Or continue using'),
                           ElevatedButton.icon(
                             icon: SizedBox(
                                 height: 50,
@@ -261,7 +263,7 @@ class _loginstate extends State<login> {
                           ),
                           const SizedBox(
                             height: 20,
-                          ),
+                          ),*/
                           ElevatedButton(
                               onPressed: _submit,
                               child: _isloading?const Center(child: CircularProgressIndicator(color: Colors.purpleAccent,),):Text(_islogin ? 'Sign In' : 'Sign Up')),
