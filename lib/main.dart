@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Finance app',
+        title: 'Startup Sage',
         theme: ThemeData(useMaterial3: true),
         home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),

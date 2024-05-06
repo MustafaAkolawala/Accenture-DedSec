@@ -101,6 +101,9 @@ class _loginstate extends State<login> {
         else{
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Something went wrong!! Try again'),duration: Duration(milliseconds: 8),));
+          setState(() {
+            _isloading=false;
+          });
         }
       }
     } on FirebaseAuthException catch (error) {
@@ -109,6 +112,9 @@ class _loginstate extends State<login> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(error.message ?? 'Authentication failed'),
         ));
+        setState(() {
+          _isloading=false;
+        });
       }
     }
   }

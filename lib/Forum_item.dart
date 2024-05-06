@@ -95,7 +95,7 @@ class _ForumitemState extends State<Forumitem> {
             child: Column(
               children: [
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                  Text(widget.snap['Question']),
+                  Text(widget.snap['Question'],overflow: TextOverflow.ellipsis,),
                   IconButton(
                       onPressed: () {
                         showDialog(

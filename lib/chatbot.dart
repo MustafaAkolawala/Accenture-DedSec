@@ -34,7 +34,7 @@ class _ChatbotState extends State<Chatbot> {
   var querycontroller = TextEditingController();
 
   void get() async {
-    var url = 'http://03c3-49-36-9-159.ngrok-free.app/bot';
+    var url = 'http://c010-49-36-9-159.ngrok-free.app/bot';
     var data = await fetchdata(url, string);
     output = data['response'];
     _tag.add(data['tag']);

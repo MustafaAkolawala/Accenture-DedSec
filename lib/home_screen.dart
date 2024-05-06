@@ -14,6 +14,10 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
+import 'package:file_picker/file_picker.dart';
+
+
+
 class Homescreen extends StatefulWidget{
   const Homescreen({super.key});
 
@@ -53,7 +57,24 @@ Forum(),
   Settings()
 
 ];*/
+  String? _imageData;
 
+  Future<void> _pickFileAndUpload() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['csv']);
+
+    if (result != null) {
+      var request = http.MultipartRequest('POST', Uri.parse('http://9cc2-49-36-9-159.ngrok-free.app/forecast-plot'));
+      request.files.add(await http.MultipartFile.fromPath('file', result.files.single.path!));
+      var response = await request.send();
+      var responseData = await response.stream.toBytes();
+
+      setState(() {
+        _imageData = base64Encode(responseData);
+      });
+    } else {
+      // User canceled the picker
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,18 +157,34 @@ Forum(),
           ),
         ),
       ),
-      body: Center(child: Column(
-        children: [
-          Text('succesfully Logged in'),
+       body: Center(
+    child: _imageData != null
+    ? Column(
+      children: [
+        Image.memory(base64Decode(_imageData!)),
+        Text('This is the forcasted data'),
+        Text('Disclaimer: the prediction is not to be considered as 100% accurate')
+      ],
+    )
+        : Text('No plot available.'),
+    ),
+    floatingActionButton: FloatingActionButton(
+    onPressed: _pickFileAndUpload,
+    tooltip: 'Pick and Upload',
+    child: Icon(Icons.upload_file),
+    ),
+       //Center(child: Column(
+      //   children: [
+      //     Text('succesfully Logged in'),
           /*ElevatedButton(onPressed: ()async{
             final path= await FlutterDocumentPicker.openDocument();
             File file= File(path!);
             String url= 'http://7dca-49-36-9-159.ngrok-free.app/upload';
             fetchdata(url, file);
           }, child: Text('upload pdf')),*/
-        ],
-      ),),),
-    );
+      //   ],
+      // ),),),
+    ));
   }
 
 }

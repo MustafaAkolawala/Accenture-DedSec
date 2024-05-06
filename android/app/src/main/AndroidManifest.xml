@@ -17,7 +17,7 @@
 
     </queries>
    <application
-        android:label="hackathon"
+        android:label="Startup Sage"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
        >
