@@ -1,16 +1,60 @@
-# hackathon
+# **Accenture-DedSec**
 
-A new Flutter project.
+    -- Github repostitory.
+
+    Group members :
+    1.Mustafa Akolawala
+    2.Shadaab Hasan
+    3.Sudheendra Settipalli 
+    4.Surya Pillai
+
+    The aim of our project is to create a 
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+## Project Overview
+
+
+
+## Features
+
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Prerequisites
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+### Installation
+
+
+
+## Usage
+
+
+
+## Contributing
+
+
+
+## License
+
+
+
+## Contact
+
+
+
+---
+
