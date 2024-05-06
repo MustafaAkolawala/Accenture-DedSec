@@ -1,0 +1,401 @@
+{
+    "intents": [
+        {
+            "tag": "primary greetings",
+            "patterns": [
+                "Hello",
+                "Hi",
+                "Hey",
+                "Good morning",
+                "Good afternoon",
+                "Good evening",
+                "Yo",
+                "How have you been",
+                "What's up",
+                "How are you doing",
+                "It's good to see you"
+            ],
+            "responses": [
+                "Hello! How can I assist you today?",
+                "Hi there! How can I help you?",
+                "Hey! What can I do for you?",
+                "Good day! How may I assist you?"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "goodbye",
+            "patterns": [
+                "Goodbye",
+                "See you later",
+                "Bye",
+                "Farewell",
+                "Take care"
+            ],
+            "responses": [
+                "Goodbye! If you have more questions, feel free to ask.",
+                "See you later! Don't hesitate to return if you need assistance.",
+                "Bye for now! Have a great day.",
+                "Farewell! If you need any information, just ask."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "type of business",
+            "patterns": [
+                "What type of business do I have?",
+                "Tell me my business type",
+                "Business entity type",
+                "Types of businesses",
+                "Different business entities",
+                "Explain my business structure",
+                "I want to know my company type",
+                "Can you clarify my business entity",
+                "Define my business organization",
+                "Tell me about my company structure",
+                "My business category",
+                "What is my business setup?",
+                "Describe my business form",
+                "I need info about my company type",
+                "provide documents for business",
+                "give documents for business",
+                "provide tax incentives for business",
+                "provide government schemes for business",
+                "give tax incentives for business",
+                "give government schemes for business"
+            ],
+            "responses": [
+                "Businesses can take various forms. Here are the main types:\n 1. Individual\n 2. Proprietorship firm\n 3. Partnership firm\n 4. Limited Liability partnership\n 5. Joint stock company"
+            ],
+            "context_set": "business_types_context"
+        },
+        {
+            "tag": "individual_business",
+            "patterns": [
+                "I operate a one-person business",
+                "My business is just me",
+                "Explain the structure of my single-owner business",
+                "What's a sole proprietorship?",
+                "I'm the only owner of my company",
+                "Tell me about a one-person company",
+                "what is individual business"
+            ],
+            "responses": [
+                "An individual business, also known as a sole proprietorship, is owned and operated by a single person. The owner has full control but is personally liable for the business's debts and obligations."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "proprietorship_firm",
+            "patterns": [
+                "I run a small family-owned business",
+                "My business is family-run",
+                "Explain my family-owned firm's structure",
+                "Tell me about a small owner-managed company",
+                "What's the definition of a family-owned business?",
+                "what is proprietorship business"
+            ],
+            "responses": [
+                "A proprietorship firm is similar to an individual business but may involve a single owner or a small family-owned business. The owner(s) have full control and are personally responsible for business liabilities."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "partnership_firm",
+            "patterns": [
+                "I'm part of a business with multiple partners",
+                "My company is a partnership",
+                "Explain my multi-partner business structure",
+                "Tell me about shared ownership businesses",
+                "What is a business partnership with more than one owner?",
+                "what is a partnership firm"
+            ],
+            "responses": [
+                "A partnership firm is formed when two or more individuals or entities collaborate to run a business. Partners share profits, losses, and responsibilities, and they may have personal liability depending on the type of partnership."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "llp",
+            "patterns": [
+                "I have an LLP, Limited Liability Partnership",
+                "My business is structured as an LLP",
+                "Tell me about the structure of an LLP",
+                "Explain Limited Liability Partnerships",
+                "What does an LLP entail?"
+            ],
+            "responses": [
+                "A Limited Liability Partnership (LLP) combines the features of a partnership and a corporation. It offers limited liability protection to its partners, meaning their personal assets are generally not at risk for business debts."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "joint_stock_company",
+            "patterns": [
+                "I own shares in a corporation",
+                "My business operates as a joint stock company",
+                "Explain my company's structure",
+                "Tell me about shareholding in a company",
+                "What is a corporation with shareholders?",
+                "what is a joint stock company"
+                ]
+            ,
+            "responses": [
+                "A joint stock company, often referred to as a company, is a legal entity distinct from its shareholders. Ownership is represented by shares of stock, and shareholders have limited liability, meaning their personal assets are typically protected from business debts."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "default_business_type",
+            "patterns": [
+                "I'm not sure about my business type",
+                "I need help classifying my business entity",
+                "Can you assist me in determining my company structure?",
+                "I'm unsure about the structure of my business",
+                "I'm uncertain about my company's legal form"
+            ],
+            "responses": [
+                "If you're uncertain about your business type, it's advisable to seek advice from a legal or business professional who can help you determine the most suitable structure."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "documents_individual_business",
+            "patterns": [
+                "What legal documents do I need for my Individual Business?",
+                "Can you explain the paperwork required for my Individual Business?",
+                "List of legal documents for my Individual Business",
+                "Documentation checklist for my Individual Business",
+                "Paperwork for starting an Individual Business",
+                "What forms and permits do I need for my Individual Business?"
+            ],
+            "responses": [
+                "For an Individual Business (Sole Proprietorship), you may need the following documents:",
+                "Here's a list of documents you may need for your Individual Business:"
+            ],
+            "context_set": "documents_context"
+        },
+        {
+            "tag": "government_schemes_individual_business",
+            "patterns": [
+                "Tell me about government grants for Individual Businesses",
+                "What are the government programs to support one-person businesses?",
+                "Government initiatives for solo entrepreneurs",
+                "How can I benefit from government schemes as a Sole Proprietor?",
+                "Government grants and subsidies for single-owner businesses",
+                "List of government programs for Individual Business owners"
+            ],
+            "responses": [
+                "There are various government schemes and programs that can benefit Individual Businesses (Sole Proprietorships). Some of these include:",
+                "Government schemes can provide valuable support to Individual Businesses. Here are a few examples:"
+            ],
+            "context_set": "government_schemes_context"
+        },
+        {
+            "tag": "tax_incentives_individual_business",
+            "patterns": [
+                "Tell me about tax benefits for Individual Businesses (Sole Proprietorships)",
+                "Explain tax incentives for one-person businesses",
+                "How can I reduce taxes for my Individual Business?",
+                "Tax deductions for Sole Proprietors",
+                "Tax credits for one-person business owners",
+                "Ways to save on taxes as a Sole Proprietor"
+            ],
+            "responses": [
+                "Tax incentives for Individual Businesses (Sole Proprietorships) can vary depending on your location and specific circumstances. Some common tax incentives for Sole Proprietors include:",
+                "Here are some tax incentives that may apply to your Individual Business (Sole Proprietorship):"
+            ],
+            "context_set": "tax_incentives_context"
+        },
+        {
+            "tag": "documents_proprietorship_firm",
+            "patterns": [
+                "What legal documents do I need for my Proprietorship Firm?",
+                "Can you explain the paperwork required for my Proprietorship Firm?",
+                "List of legal documents for my Proprietorship Firm",
+                "Documentation checklist for my Proprietorship Firm",
+                "Paperwork for starting a Proprietorship Firm",
+                "What forms and permits do I need for my Proprietorship Firm?"
+            ],
+            "responses": [
+                "For a Proprietorship Firm, you may need the following documents:",
+                "Here's a list of documents you may need for your Proprietorship Firm:"
+            ],
+            "context_set": "documents_context"
+        },
+        {
+            "tag": "government_schemes_proprietorship_firm",
+            "patterns": [
+                "Tell me about government grants for Proprietorship Firms",
+                "What are the government programs to support family-owned businesses?",
+                "Government initiatives for small owner-managed companies",
+                "How can I benefit from government schemes as a family-owned business?",
+                "Government grants and subsidies for Proprietorship Firms",
+                "List of government programs for Proprietorship Firm owners"
+            ],
+            "responses": [
+                "There are various government schemes and programs that can benefit Proprietorship Firms. Some of these include:",
+                "Government schemes can provide valuable support to Proprietorship Firms. Here are a few examples:"
+            ],
+            "context_set": "government_schemes_context"
+        },
+        {
+            "tag": "tax_incentives_proprietorship_firm",
+            "patterns": [
+                "Tell me about tax benefits for Proprietorship Firms",
+                "Explain tax incentives for family-owned businesses",
+                "How can I reduce taxes for my Proprietorship Firm?",
+                "Tax deductions for small owner-managed companies",
+                "Tax credits for family-owned business owners",
+                "Ways to save on taxes as a Proprietorship Firm"
+            ],
+            "responses": [
+                "Tax incentives for Proprietorship Firms can vary depending on your location and specific circumstances. Some common tax incentives for family-owned businesses include:",
+                "Here are some tax incentives that may apply to your Proprietorship Firm:"
+            ],
+            "context_set": "tax_incentives_context"
+        },
+        {
+            "tag": "documents_partnership_firm",
+            "patterns": [
+                "What legal documents do I need for my Partnership Firm?",
+                "Can you explain the paperwork required for my Partnership Firm?",
+                "List of legal documents for my Partnership Firm",
+                "Documentation checklist for my Partnership Firm",
+                "Paperwork for starting a Partnership Firm",
+                "What forms and permits do I need for my Partnership Firm?"
+            ],
+            "responses": [
+                "For a Partnership Firm, you may need the following documents:",
+                "Here's a list of documents you may need for your Partnership Firm:"
+            ],
+            "context_set": "documents_context"
+        },
+        {
+            "tag": "government_schemes_partnership_firm",
+            "patterns": [
+                "Tell me about government grants for Partnership Firms",
+                "What are the government programs to support shared ownership businesses?",
+                "Government initiatives for business partnerships with multiple owners",
+                "How can I benefit from government schemes as a partnership business?",
+                "Government grants and subsidies for Partnership Firms",
+                "List of government programs for Partnership Firm owners"
+            ],
+            "responses": [
+                "There are various government schemes and programs that can benefit Partnership Firms. Some of these include:",
+                "Government schemes can provide valuable support to Partnership Firms. Here are a few examples:"
+            ],
+            "context_set": "government_schemes_context"
+        },
+        {
+            "tag": "tax_incentives_partnership_firm",
+            "patterns": [
+                "Tell me about tax benefits for Partnership Firms",
+                "Explain tax incentives for business partnerships with multiple owners",
+                "How can I reduce taxes for my Partnership Firm?",
+                "Tax deductions for shared ownership businesses",
+                "Tax credits for partnership business owners",
+                "Ways to save on taxes as a Partnership Firm"
+            ],
+            "responses": [
+                "Tax incentives for Partnership Firms can vary depending on your location and specific circumstances. Some common tax incentives for partnership businesses include:",
+                "Here are some tax incentives that may apply to your Partnership Firm:"
+            ],
+            "context_set": "tax_incentives_context"
+        },
+        {
+            "tag": "documents_llp",
+            "patterns": [
+                "What legal documents do I need for my Limited Liability Partnership (LLP)?",
+                "Can you explain the paperwork required for my LLP?",
+                "List of legal documents for my LLP",
+                "Documentation checklist for my LLP",
+                "Paperwork for starting an LLP",
+                "What forms and permits do I need for my LLP?"
+            ],
+            "responses": [
+                "For a Limited Liability Partnership (LLP), you may need the following documents:",
+                "Here's a list of documents you may need for your LLP:"
+            ],
+            "context_set": "documents_context"
+        },
+        {
+            "tag": "government_schemes_llp",
+            "patterns": [
+                "Tell me about government grants for LLPs",
+                "What are the government programs to support LLPs?",
+                "Government initiatives for LLPs",
+                "How can I benefit from government schemes as an LLP?",
+                "Government grants and subsidies for LLPs",
+                "List of government programs for LLP owners"
+            ],
+            "responses": [
+                "There are various government schemes and programs that can benefit Limited Liability Partnerships (LLPs). Some of these include:",
+                "Government schemes can provide valuable support to LLPs. Here are a few examples:"
+            ],
+            "context_set": "government_schemes_context"
+        },
+        {
+            "tag": "tax_incentives_llp",
+            "patterns": [
+                "Tell me about tax benefits for LLPs",
+                "Explain tax incentives for Limited Liability Partnerships (LLPs)",
+                "How can I reduce taxes for my LLP?",
+                "Tax deductions for LLPs",
+                "Tax credits for LLP owners",
+                "Ways to save on taxes as an LLP"
+            ],
+            "responses": [
+                "A Limited Liability Partnership (LLP) combines the features of a partnership and a corporation. It offers limited liability protection to its partners, meaning their personal assets are generally not at risk for business debts."
+            ],
+            "context_set": "tax_incentives_context"
+        },
+        {
+            "tag": "documents_joint_stock_company",
+            "patterns": [
+                "What legal documents do I need for my Joint Stock Company?",
+                "Can you explain the paperwork required for my Joint Stock Company?",
+                "List of legal documents for my Joint Stock Company",
+                "Documentation checklist for my Joint Stock Company",
+                "Paperwork for starting a Joint Stock Company",
+                "What forms and permits do I need for my Joint Stock Company?"
+            ],
+            "responses": [
+                "For a Joint Stock Company, you may need the following documents:",
+                "Here's a list of documents you may need for your Joint Stock Company:"
+            ],
+            "context_set": "documents_context"
+        },
+        {
+            "tag": "government_schemes_joint_stock_company",
+            "patterns": [
+                "Tell me about government grants for Joint Stock Companies",
+                "What are the government programs to support corporations with shareholders?",
+                "Government initiatives for Joint Stock Companies",
+                "How can I benefit from government schemes as a corporation with shareholders?",
+                "Government grants and subsidies for Joint Stock Companies",
+                "List of government programs for Joint Stock Company owners"
+            ],
+            "responses": [
+                "There are various government schemes and programs that can benefit Joint Stock Companies. Some of these include:",
+                "Government schemes can provide valuable support to Joint Stock Companies. Here are a few examples:"
+            ],
+            "context_set": "government_schemes_context"
+        },
+        {
+            "tag": "tax_incentives_joint_stock_company",
+            "patterns": [
+                "Tell me about tax benefits for Joint Stock Companies",
+                "Explain tax incentives for corporations with shareholders",
+                "How can I reduce taxes for my Joint Stock Company?",
+                "Tax deductions for corporations with shareholders",
+                "Tax credits for Joint Stock Company owners",
+                "Ways to save on taxes as a Joint Stock Company"
+            ],
+            "responses": [
+                "A Joint Stock Company, often referred to as a company, is a legal entity distinct from its shareholders. Ownership is represented by shares of stock, and shareholders have limited liability, meaning their personal assets are typically protected from business debts."
+            ],
+            "context_set": "tax_incentives_context"
+        }
+    ]
+}
